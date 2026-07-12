@@ -2,9 +2,21 @@ import { create } from 'zustand';
 
 export const useAuthStore = create((set) => {
   // Retrieve initial state from localStorage if it exists
+  const isDevMode = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_ROLE_SELECTOR === 'true';
   const initialUser = JSON.parse(localStorage.getItem('auth_user') || 'null');
   const initialToken = localStorage.getItem('auth_token') || '';
-  const initialRole = localStorage.getItem('auth_role') || '';
+  
+  let initialRole = localStorage.getItem('auth_role') || '';
+  if (isDevMode) {
+    const devRole = localStorage.getItem('dev_role');
+    if (devRole) {
+      initialRole = devRole;
+      if (initialUser) {
+        initialUser.role = devRole;
+      }
+    }
+  }
+
   const initialOrganizationId = localStorage.getItem('auth_organization_id') || '';
   const initialTenantId = localStorage.getItem('auth_tenant_id') || '';
   const initialIsAuthenticated = !!initialToken;
@@ -20,15 +32,30 @@ export const useAuthStore = create((set) => {
     login: (user, token, role, organization_id = '', tenant_id = '') => {
       const orgId = organization_id || user?.organization_id || '';
       const tenId = tenant_id || user?.tenant_id || '';
+      
+      let finalRole = role;
+      if (isDevMode) {
+        const devRole = localStorage.getItem('dev_role');
+        if (devRole) {
+          finalRole = devRole;
+          if (user) {
+            user.role = devRole;
+          }
+        }
+      }
+      if (!finalRole) {
+        finalRole = 'EMPLOYEE';
+      }
+
       localStorage.setItem('auth_user', JSON.stringify(user));
       localStorage.setItem('auth_token', token);
-      localStorage.setItem('auth_role', role);
+      localStorage.setItem('auth_role', finalRole);
       localStorage.setItem('auth_organization_id', orgId);
       localStorage.setItem('auth_tenant_id', tenId);
       set({
         user,
         token,
-        role,
+        role: finalRole,
         organization_id: orgId,
         tenant_id: tenId,
         isAuthenticated: true,
@@ -52,6 +79,12 @@ export const useAuthStore = create((set) => {
     },
 
     setUser: (user) => {
+      if (isDevMode && user) {
+        const devRole = localStorage.getItem('dev_role');
+        if (devRole) {
+          user.role = devRole;
+        }
+      }
       localStorage.setItem('auth_user', JSON.stringify(user));
       const updates = { user };
       if (user && user.organization_id !== undefined) {

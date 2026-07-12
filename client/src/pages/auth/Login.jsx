@@ -19,6 +19,22 @@ export default function Login() {
   const loginStore = useAuthStore((state) => state.login);
   const navigate = useNavigate();
 
+  const isDevMode = import.meta.env.DEV || import.meta.env.VITE_ENABLE_DEV_ROLE_SELECTOR === 'true';
+  const [devRole, setDevRole] = useState(() => {
+    return localStorage.getItem('dev_role') || 'EMPLOYEE';
+  });
+
+  useEffect(() => {
+    if (isDevMode && !localStorage.getItem('dev_role')) {
+      localStorage.setItem('dev_role', 'EMPLOYEE');
+    }
+  }, [isDevMode]);
+
+  const handleDevRoleChange = (val) => {
+    setDevRole(val);
+    localStorage.setItem('dev_role', val);
+  };
+
   // Load remembered email on mount
   useEffect(() => {
     const savedEmail = localStorage.getItem('auth_remembered_email');
@@ -209,6 +225,26 @@ export default function Login() {
             Sign In
           </Button>
         </form>
+
+        {isDevMode && (
+          <div className="mt-5 p-4 bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/20 rounded-2xl text-left select-none">
+            <div className="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+              Development Role Selector - For Testing Only
+            </div>
+            <select
+              value={devRole}
+              onChange={(e) => handleDevRoleChange(e.target.value)}
+              className="w-full px-3 py-2 bg-white dark:bg-slate-800 border border-amber-550/30 dark:border-amber-500/20 rounded-xl text-slate-800 dark:text-slate-200 text-xs font-bold focus:outline-none focus:ring-2 focus:ring-amber-500/20 transition-all cursor-pointer"
+            >
+              <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="ASSET_MANAGER">ASSET_MANAGER</option>
+              <option value="DEPARTMENT_HEAD">DEPARTMENT_HEAD</option>
+              <option value="EMPLOYEE">EMPLOYEE</option>
+            </select>
+          </div>
+        )}
 
         <div className="mt-8 text-center border-t border-slate-200 dark:border-slate-800/80 pt-6">
           <p className="text-slate-500 dark:text-slate-400 text-xs font-semibold">
