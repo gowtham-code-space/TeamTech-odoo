@@ -1,0 +1,366 @@
+/* ======================================================================
+   DATABASE : trash_management_test
+   NOTE     : STRUCTURE REFERENCE ONLY (no executable SQL below)
+
+   TIMEZONE : All DATETIME fields store UTC time
+              - Backend uses UTC_TIMESTAMP() for inserts/updates
+              - Frontend receives ISO 8601 format (e.g., 2026-02-19T05:55:17.000Z)
+              - Browser automatically converts to user's local timezone
+   ====================================================================== */
+
+TABLE: role
+-----------------------------------------------------------------------
+- role_id            BIGINT            PK
+- role_name          ENUM('RESIDENT','TRASHMAN','SUPERVISOR','SI','MHO','COMMISSIONER','ADMIN')
+
+
+TABLE: users
+-----------------------------------------------------------------------
+- user_id            BIGINT            PK
+- role_id            BIGINT            FK -> role(role_id)
+- division_id        BIGINT            FK -> street_divisions(division_id)
+- first_name         VARCHAR(100)
+- last_name          VARCHAR(100)
+- preferred_language VARCHAR(50)
+- phone_number       VARCHAR(15)       UNIQUE
+- email              VARCHAR(255)      UNIQUE
+- profile_pic        VARCHAR(255)
+- district           VARCHAR(100)
+- ward_number        INT
+- ward_name          VARCHAR(255)
+- street_name        VARCHAR(255)
+- house_number       VARCHAR(255)
+- last_address_change DATETIME
+- refresh_token_hash VARCHAR(255)
+- has_completed_signup TINYINT(1)      DEFAULT 0
+- created_at         DATETIME
+
+
+TABLE: auth_otp
+-----------------------------------------------------------------------
+- otp_id             BIGINT            PK
+- user_id            BIGINT            (NO FK constraint)
+- otp_type           ENUM('EMAIL')
+- identifier         VARCHAR(255)
+- otp_hash           VARCHAR(255)
+- is_used            TINYINT(1)
+- expires_at         DATETIME
+- created_at         DATETIME
+
+
+TABLE: attendance
+-----------------------------------------------------------------------
+- att_id             BIGINT            PK
+- user_id            BIGINT            FK -> users(user_id)
+- user_role          BIGINT            FK -> role(role_id)
+- time_id            BIGINT            FK -> attendance_timings(time_id)
+- att_type           ENUM('AI_FACIAL_RECOGNITION','MANUAL')
+- status             ENUM('PENDING','PRESENT','ABSENT','REJECTED') DEFAULT 'PENDING'
+- created_at         DATETIME
+
+
+TABLE: attendance_timings
+-----------------------------------------------------------------------
+- time_id            BIGINT            AUTO_INCREMENT PK
+- role_id            BIGINT            NOT NULL
+- session_id         BIGINT            NOT NULL
+- start_time         DATETIME          NOT NULL
+- closing_time       DATETIME          NOT NULL
+- is_active          TINYINT(1)        DEFAULT 1
+- is_deleted         TINYINT(1)        DEFAULT 0
+- created_at         DATETIME          DEFAULT CURRENT_TIMESTAMP
+- updated_at         DATETIME          DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+
+TABLE: attendance_sessions
+-----------------------------------------------------------------------
+- session_id         BIGINT            AUTO_INCREMENT PK
+- session_name       VARCHAR(100)      NOT NULL UNIQUE
+
+
+TABLE: attendance_metrics
+-----------------------------------------------------------------------
+- metrics_id         BIGINT            AUTO_INCREMENT PK
+- user_id            BIGINT            NOT NULL
+- role_id            BIGINT            NOT NULL
+- present_days       DECIMAL(10,2)     DEFAULT 0.00
+- absent_days        DECIMAL(10,2)     DEFAULT 0.00
+- created_at         TIMESTAMP         DEFAULT CURRENT_TIMESTAMP
+- updated_at         TIMESTAMP         DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+
+TABLE: district
+-----------------------------------------------------------------------
+- district_id        BIGINT            PK
+- district_name      VARCHAR(100)      UNIQUE
+- geo_json           JSON
+
+
+TABLE: zone
+-----------------------------------------------------------------------
+- zone_id            BIGINT            PK
+- district_id        BIGINT            FK -> district(district_id)
+- zone_name          VARCHAR(100)
+- geo_json           JSON
+
+
+TABLE: ward
+-----------------------------------------------------------------------
+- ward_id            BIGINT            PK
+- zone_id            BIGINT            FK -> zone(zone_id)
+- ward_number        INT
+- ward_name          VARCHAR(100)
+
+
+TABLE: ward_divisions
+-----------------------------------------------------------------------
+- division_id        BIGINT            PK
+- ward_id            BIGINT            FK -> ward(ward_id)
+- division_name      VARCHAR(100)
+- geo_json           JSON
+
+
+TABLE: street
+-----------------------------------------------------------------------
+- street_id          BIGINT            PK
+- ward_id            BIGINT            FK -> ward(ward_id)
+- street_name        VARCHAR(100)
+
+
+TABLE: route
+-----------------------------------------------------------------------
+- route_id           BIGINT            PK
+- route_name         TEXT
+- start_time         TIME
+- end_time           TIME
+- is_active          TINYINT(1)
+
+
+TABLE: street_divisions
+-----------------------------------------------------------------------
+- street_division_id BIGINT            PK
+- division_id        BIGINT            FK -> ward_divisions(division_id)
+- street_id          BIGINT            FK -> street(street_id)
+- route_id           BIGINT            FK -> route(route_id)
+
+
+TABLE: trashman_assignment
+-----------------------------------------------------------------------
+- assignment_id      BIGINT            PK
+- route_id           BIGINT            FK -> route(route_id)
+- user_id            BIGINT            FK -> users(user_id)
+- assigned_at        DATETIME
+- is_active          TINYINT(1)
+
+
+TABLE: resident_complaints
+-----------------------------------------------------------------------
+- complaint_id       BIGINT            PK
+- user_id            BIGINT            FK -> users(user_id)
+- division_id        BIGINT            FK -> division(division_id)
+- zone_id            BIGINT            FK -> zone(zone_id)
+- district_id        BIGINT            FK -> district(district_id)
+- escalation_id      BIGINT            FK -> escalation_flow(escalation_id)
+- complaint_image    VARCHAR(255)
+- complaint_type     VARCHAR(100)
+- description        TEXT
+- accept_count       INT
+- decline_count      INT
+- complaint_lat      DECIMAL(10,8)
+- complaint_lon      DECIMAL(11,8)
+- complaint_status   ENUM('PENDING','IN_PROGRESS','WORK_COMPLETED','SUPERVISOR_VERIFIED','RESOLVED','REJECTED')
+- remarks            TEXT
+- current_level      BIGINT            NOT NULL FK -> role(role_id)
+- is_gis_fallback    TINYINT(1)        DEFAULT 0
+- created_at         DATETIME
+- next_escalation_time DATETIME
+
+
+TABLE: immediate_tasks
+-----------------------------------------------------------------------
+- task_id            BIGINT            PK
+- complaint_id       BIGINT            FK -> resident_complaints(complaint_id)
+- assigned_by        BIGINT            FK -> users(user_id)
+- assigned_to        BIGINT            FK -> users(user_id)
+- evidence_image_url VARCHAR(255)
+- status             ENUM('IN_PROGRESS','WORK_COMPLETED','NO_ISSUES_FOUND') DEFAULT 'IN_PROGRESS'
+- assigned_at        DATETIME          DEFAULT CURRENT_TIMESTAMP
+
+
+TABLE: division_officers
+-----------------------------------------------------------------------
+- mapping_id         BIGINT            PK
+- division_id        BIGINT            FK -> ward_divisions(division_id)
+- zone_id            BIGINT            FK -> zone(zone_id)
+- district_id        BIGINT            FK -> district(district_id)
+- user_id            BIGINT            FK -> users(user_id)
+- role_id            BIGINT            FK -> role(role_id)
+- is_active          TINYINT(1)
+
+
+TABLE: question_db
+-----------------------------------------------------------------------
+- question_id        BIGINT            PK
+- question           TEXT
+- option_a           VARCHAR(255)
+- option_b           VARCHAR(255)
+- option_c           VARCHAR(255)
+- option_d           VARCHAR(255)
+- correct_option     ENUM('A','B','C','D')
+
+
+TABLE: quiz_total_score_time
+-----------------------------------------------------------------------
+- score_time_id      BIGINT            PK
+- total_time         TIME
+- total_score        INT
+- correct_mark       DECIMAL(10,2)
+- wrong_mark         DECIMAL(10,2)
+- pass_mark          DECIMAL(10,2)
+- total_questions    INT
+- is_active          TINYINT(1)        DEFAULT 0
+- is_deleted         TINYINT(1)        DEFAULT 0
+
+
+TABLE: quiz_management
+-----------------------------------------------------------------------
+- quiz_id            BIGINT            PK
+- user_id            BIGINT            FK -> users(user_id)
+- score_time_id      BIGINT            FK -> quiz_total_score_time(score_time_id)
+- score              DECIMAL(10,2)
+- is_pass            TINYINT(1)
+- certificate_url    VARCHAR(255)
+- created_at         DATETIME          UTC timezone, stored via UTC_TIMESTAMP()
+- finishes_at        DATETIME          UTC timezone, calculated from created_at + total_time
+- completed_at       DATETIME NULL     UTC timezone, set via UTC_TIMESTAMP()
+- has_completed      TINYINT(1)        DEFAULT 0
+
+
+TABLE: quiz_history
+-----------------------------------------------------------------------
+- history_id         BIGINT            PK
+- quiz_id            BIGINT            FK -> quiz_management(quiz_id)
+- question_id        BIGINT            FK -> question_db(question_id)
+- correct_answer     ENUM('A','B','C','D')
+- user_answer        ENUM('A','B','C','D') DEFAULT NULL
+- is_marked          TINYINT(1)        DEFAULT 0
+
+
+TABLE: rating
+-----------------------------------------------------------------------
+- rating_id          BIGINT            PK
+- from_user_id       BIGINT            FK -> users(user_id)
+- to_user_id         BIGINT            FK -> users(user_id)
+- rating             INT
+- description        TEXT
+- to_rating_id       BIGINT            FK -> role(role_id)
+- rating_method      ENUM('QR','OTP')
+- created_at         DATETIME
+
+
+TABLE: rating_auth
+-----------------------------------------------------------------------
+- auth_id            BIGINT            PK
+- rating_id          BIGINT            FK -> rating(rating_id)
+- qr_hash            VARCHAR(255)
+- otp_hash           VARCHAR(255)
+- is_used            TINYINT(1)        DEFAULT 0
+- created_at         DATETIME
+- expire_at          TIMESTAMP
+- rating_given_at    DATETIME
+
+
+===================================================================================
+LOGGING TABLES
+===================================================================================
+
+TABLE: api_request_logs
+-----------------------------------------------------------------------
+- api_log_id         BIGINT            PK
+- user_id            BIGINT            FK -> users(user_id) NULL
+- role_id            BIGINT            FK -> role(role_id) NULL
+- endpoint           VARCHAR(255)
+- http_method        VARCHAR(10)
+- status_code        INT
+- response_time_ms   INT
+- ip_address         VARCHAR(45)
+- user_agent         TEXT
+- request_body       JSON              NULL
+- response_body      JSON              NULL
+- created_at         DATETIME          UTC timezone, set via UTC_TIMESTAMP()
+
+
+TABLE: audit_logs
+-----------------------------------------------------------------------
+- audit_log_id       BIGINT            PK
+- entity_type        VARCHAR(100)
+- entity_id          BIGINT
+- action_type        VARCHAR(100)
+- old_value          JSON              NULL
+- new_value          JSON              NULL
+- performed_by       BIGINT            FK -> users(user_id)
+- performed_role_id  BIGINT            FK -> role(role_id) NULL
+- ip_address         VARCHAR(45)
+- user_agent         TEXT
+- remarks            TEXT              NULL
+- created_at         DATETIME          UTC timezone, set via UTC_TIMESTAMP()
+
+
+TABLE: event_logs
+-----------------------------------------------------------------------
+- event_log_id       BIGINT            PK
+- event_type         VARCHAR(100)
+- entity_type        VARCHAR(100)
+- entity_id          BIGINT
+- user_id            BIGINT            FK -> users(user_id) NULL
+- severity           ENUM('INFO','WARNING','CRITICAL') DEFAULT 'INFO'
+- metadata           JSON              NULL
+- created_at         DATETIME          UTC timezone, set via UTC_TIMESTAMP()
+
+
+TABLE: metrics_minute
+-----------------------------------------------------------------------
+- tenant_id
+- metric_type        -- API_TRAFFIC / HTTP_4XX / HTTP_5XX
+- bucket_time        -- rounded minute
+- count
+
+PRIMARY KEY (tenant_id, metric_type, bucket_time)
+INDEX (tenant_id, bucket_time)
+
+
+TABLE: escalation_flow
+-----------------------------------------------------------------------
+- escalation_id      BIGINT            AUTO_INCREMENT PK
+- from_role_id       BIGINT            NOT NULL
+- to_role_id         BIGINT            NOT NULL
+- assignable_role    BIGINT            NOT NULL
+- escalation_duration INT              NOT NULL
+- escalation_type    ENUM('MINUTES','DAYS','WEEKS','NA')
+
+Example data pattern noted in source:
+  escalation_id        => 1, 2, 3
+  from_role_id:to_role_id => 1:3, 3:4, 4:5, 5:6
+  assignable_role      => 2, 3, 4, 5
+  escalation_duration  => 4, 3, 2, -1 (role_id 5 is top; no time limit)
+  escalation_type      => DAYS, MINUTES, WEEKS, NA
+
+
+TABLE: complaint_workflow_history
+-----------------------------------------------------------------------
+- workflow_id        BIGINT UNSIGNED   AUTO_INCREMENT PK
+- complaint_id       BIGINT UNSIGNED   NOT NULL
+- shifted_from_role_id BIGINT          FK -> role(role_id)
+- shifted_to_role_id BIGINT            NOT NULL FK -> role(role_id)
+- shifted_at         DATETIME          DEFAULT CURRENT_TIMESTAMP
+
+
+TABLE: complaint_vote_history
+-----------------------------------------------------------------------
+- vote_id            BIGINT            AUTO_INCREMENT PK
+- complaint_id       BIGINT            NOT NULL FK -> resident_complaints(complaint_id)
+- user_id            BIGINT            NOT NULL FK -> user(user_id)
+- vote_type          ENUM('UPVOTE','DOWNVOTE')
+- vote_phase         ENUM('PRE_RESOLUTION','POST_RESOLUTION')
+- is_voted           TINYINT(1)        DEFAULT 0
+- voted_at           DATETIME          DEFAULT CURRENT_TIMESTAMP
