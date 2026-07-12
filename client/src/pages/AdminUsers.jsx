@@ -349,7 +349,7 @@ export default function AdminUsers() {
                     className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
                   >
                     <option value={ROLES.ASSET_MANAGER}>Asset Manager</option>
-                    <option value={ROLES.DEPT_HEAD}>Department Head</option>
+                    <option value={ROLES.DEPARTMENT_HEAD}>Department Head</option>
                   </select>
                 </div>
               </div>

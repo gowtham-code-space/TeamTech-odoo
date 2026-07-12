@@ -18,15 +18,15 @@ import {
 } from 'react-icons/ri';
 
 const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: RiDashboardLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
-  { path: '/organization', label: 'Organization', icon: RiBuildingLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD] },
-  { path: '/assets', label: 'Assets', icon: RiCpuLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
-  { path: '/allocation', label: 'Allocation', icon: RiExchangeLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD] },
-  { path: '/booking', label: 'Booking', icon: RiCalendarCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
-  { path: '/maintenance', label: 'Maintenance', icon: RiToolsLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/dashboard', label: 'Dashboard', icon: RiDashboardLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/organization', label: 'Organization', icon: RiBuildingLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD] },
+  { path: '/assets', label: 'Assets', icon: RiCpuLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/allocation', label: 'Allocation', icon: RiExchangeLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD] },
+  { path: '/booking', label: 'Booking', icon: RiCalendarCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/maintenance', label: 'Maintenance', icon: RiToolsLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD, ROLES.EMPLOYEE] },
   { path: '/audit', label: 'Audit', icon: RiShieldCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
   { path: '/reports', label: 'Reports', icon: RiPieChartLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
-  { path: '/notifications', label: 'Notifications', icon: RiNotification4Line, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/notifications', label: 'Notifications', icon: RiNotification4Line, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD, ROLES.EMPLOYEE] },
   { path: '/admin/users', label: 'User Directory', icon: RiUserSharedLine, roles: [ROLES.ADMIN] },
 ];
 

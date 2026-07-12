@@ -19,9 +19,10 @@ import AdminUsers from '../pages/AdminUsers'; // New administration page
 
 // Roles synchronized with database uppercase strings
 const ROLES = {
+  SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   ASSET_MANAGER: 'ASSET_MANAGER',
-  DEPT_HEAD: 'DEPARTMENT_HEAD',
+  DEPARTMENT_HEAD: 'DEPARTMENT_HEAD',
   EMPLOYEE: 'EMPLOYEE',
 };
 
@@ -87,7 +88,7 @@ export default function AppRoutes() {
         <Route
           path="organization"
           element={
-            <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD]}>
+            <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD]}>
               <Organization />
             </RoleGuard>
           }
@@ -100,7 +101,7 @@ export default function AppRoutes() {
         <Route
           path="allocation"
           element={
-            <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD]}>
+            <RoleGuard allowedRoles={[ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD]}>
               <Allocation />
             </RoleGuard>
           }

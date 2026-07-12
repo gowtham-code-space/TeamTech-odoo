@@ -3,6 +3,7 @@ const validator = require('validator');
 const { pool } = require('../config/db');
 const { generateToken } = require('../utils/jwt');
 const { success, error } = require('../utils/response');
+const { ROLES } = require('../utils/constants');
 
 /**
  * Register a new employee user.
@@ -34,7 +35,7 @@ const signup = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Odoo Compliance: Always registers new users with EMPLOYEE role
-    const defaultRole = 'EMPLOYEE';
+    const defaultRole = ROLES.EMPLOYEE;
     const defaultOrg = 'org_admin_flow';
     const defaultTenant = 'ten_main_flow';
 
@@ -97,7 +98,7 @@ const login = async (req, res) => {
     // Delete password hash from response user object
     delete user.password;
 
-    return success(res, 'Authentication successful.', { user, token });
+    return success(res, 'Login successful', { user, token });
   } catch (err) {
     console.error('Login controller error:', err.message);
     return error(res, 'Authentication failed due to a system error.');

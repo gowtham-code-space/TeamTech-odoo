@@ -3,10 +3,11 @@ const router = express.Router();
 const adminController = require('../controllers/admin.controller');
 const requireAuth = require('../middleware/auth.middleware');
 const requireRole = require('../middleware/role.middleware');
+const { ROLES } = require('../utils/constants');
 
 // Apply Admin restriction globally to all sub-routes
 router.use(requireAuth);
-router.use(requireRole(['ADMIN']));
+router.use(requireRole([ROLES.ADMIN]));
 
 // Endpoints
 router.get('/users', adminController.getUsers);

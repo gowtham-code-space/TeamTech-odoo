@@ -44,58 +44,62 @@ const initDb = async () => {
     // - New signups must always register as "EMPLOYEE" by default.
     // - Elevated roles (ASSET_MANAGER, DEPARTMENT_HEAD) can only be granted by an ADMIN
     //   via the Admin User Directory promotion workflow.
-    const [rows] = await connection.query('SELECT COUNT(*) as count FROM users');
-    if (rows[0].count === 0) {
-      console.log('Seeding default DEVELOPMENT demo accounts...');
-      
-      const seedUsers = [
-        {
-          full_name: 'System Admin',
-          email: 'admin@assetflow.com',
-          password: 'Admin@123',
-          role: 'ADMIN',
-          department: 'IT Administration',
-          organization_id: 'org_admin_flow',
-          tenant_id: 'ten_main_flow',
-        },
-        {
-          full_name: 'Asset Manager',
-          email: 'manager@assetflow.com',
-          password: 'Manager@123',
-          role: 'ASSET_MANAGER',
-          department: 'Procurement',
-          organization_id: 'org_admin_flow',
-          tenant_id: 'ten_main_flow',
-        },
-        {
-          full_name: 'Department Head',
-          email: 'hod@assetflow.com',
-          password: 'Hod@123',
-          role: 'DEPARTMENT_HEAD',
-          department: 'Engineering',
-          organization_id: 'org_admin_flow',
-          tenant_id: 'ten_main_flow',
-        },
-        {
-          full_name: 'Regular Employee',
-          email: 'employee@assetflow.com',
-          password: 'Employee@123',
-          role: 'EMPLOYEE',
-          department: 'Engineering',
-          organization_id: 'org_admin_flow',
-          tenant_id: 'ten_main_flow',
-        }
-      ];
+    const { ROLES } = require('../utils/constants');
+    const seedUsers = [
+      {
+        full_name: 'System Admin',
+        email: 'admin@assetflow.com',
+        password: 'Admin@123',
+        role: ROLES.ADMIN,
+        department: 'IT Administration',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Asset Manager',
+        email: 'manager@assetflow.com',
+        password: 'Manager@123',
+        role: ROLES.ASSET_MANAGER,
+        department: 'Procurement',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Department Head',
+        email: 'hod@assetflow.com',
+        password: 'Hod@123',
+        role: ROLES.DEPARTMENT_HEAD,
+        department: 'Engineering',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Regular Employee',
+        email: 'employee@assetflow.com',
+        password: 'Employee@123',
+        role: ROLES.EMPLOYEE,
+        department: 'Engineering',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      }
+    ];
 
-      for (const user of seedUsers) {
+    let seedCount = 0;
+    for (const user of seedUsers) {
+      // Check if user exists by email
+      const [existing] = await connection.query('SELECT id FROM users WHERE email = ?', [user.email]);
+      if (existing.length === 0) {
         const hashedPassword = await bcrypt.hash(user.password, 10);
         await connection.query(
           `INSERT INTO users (full_name, email, password, role, department, organization_id, tenant_id) 
            VALUES (?, ?, ?, ?, ?, ?, ?)`,
           [user.full_name, user.email, hashedPassword, user.role, user.department, user.organization_id, user.tenant_id]
         );
+        seedCount++;
       }
-      console.log('Demo accounts seeded successfully.');
+    }
+    if (seedCount > 0) {
+      console.log(`Seeded ${seedCount} default DEVELOPMENT demo accounts successfully.`);
     }
   } catch (error) {
     console.error('MySQL Connection or Setup failed:');

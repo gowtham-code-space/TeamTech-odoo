@@ -1,5 +1,6 @@
 const { pool } = require('../config/db');
 const { success, error } = require('../utils/response');
+const { ROLES } = require('../utils/constants');
 
 /**
  * Get all users with search, role and department filters.
@@ -72,7 +73,7 @@ const promoteUser = async (req, res) => {
     const { id } = req.params;
     const { role } = req.body;
 
-    if (!role || !['ASSET_MANAGER', 'DEPARTMENT_HEAD'].includes(role)) {
+    if (!role || ![ROLES.ASSET_MANAGER, ROLES.DEPARTMENT_HEAD].includes(role)) {
       return error(res, 'Invalid promotion role. Choose either ASSET_MANAGER or DEPARTMENT_HEAD.', 400);
     }
 
@@ -83,7 +84,7 @@ const promoteUser = async (req, res) => {
     }
 
     // Prevent role changes to seeded ADMIN
-    if (existing[0].role === 'ADMIN') {
+    if (existing[0].role === ROLES.ADMIN) {
       return error(res, 'Administrative accounts cannot be promoted or modified.', 403);
     }
 
@@ -109,11 +110,11 @@ const demoteUser = async (req, res) => {
     }
 
     // Prevent role changes to ADMIN
-    if (existing[0].role === 'ADMIN') {
+    if (existing[0].role === ROLES.ADMIN) {
       return error(res, 'Administrative accounts cannot be demoted.', 403);
     }
 
-    await pool.query("UPDATE users SET role = 'EMPLOYEE' WHERE id = ?", [id]);
+    await pool.query('UPDATE users SET role = ? WHERE id = ?', [ROLES.EMPLOYEE, id]);
     return success(res, 'User role successfully demoted back to EMPLOYEE.');
   } catch (err) {
     console.error('demoteUser controller error:', err.message);
