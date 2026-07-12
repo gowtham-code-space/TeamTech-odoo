@@ -104,11 +104,11 @@ const allocateAsset = async (assetId, userId, expectedReturnDate, allocatedBy) =
  */
 const returnAsset = async (allocationId, conditionLookupId, notes, approvedBy) => {
   const [allocRows] = await pool.query(
-    'SELECT a.*, u.full_name AS user_name, ast.asset_name 
+    `SELECT a.*, u.full_name AS user_name, ast.asset_name 
      FROM asset_allocations a
      JOIN users u ON a.user_id = u.id
      JOIN assets ast ON a.asset_id = ast.asset_id
-     WHERE a.allocation_id = ?',
+     WHERE a.allocation_id = ?`,
     [allocationId]
   );
 
