@@ -97,6 +97,24 @@ export default function Login() {
     e.preventDefault();
     setApiError(null);
 
+    // Development Authentication Bypass Mode
+    if (isDevMode) {
+      setIsLoading(true);
+      setTimeout(() => {
+        const mockUser = {
+          id: 'dev-user',
+          full_name: 'Development User',
+          email: 'dev@assetflow.local',
+          role: devRole
+        };
+        const mockToken = 'dev-token-bypass-mode';
+        loginStore(mockUser, mockToken, devRole);
+        setIsLoading(false);
+        navigate('/dashboard');
+      }, 300);
+      return;
+    }
+
     if (!validate()) return;
 
     setIsLoading(true);
@@ -230,7 +248,7 @@ export default function Login() {
           <div className="mt-5 p-4 bg-amber-500/10 dark:bg-amber-500/5 border border-amber-500/20 rounded-2xl text-left select-none">
             <div className="text-[10px] font-extrabold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-1.5 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-              Development Role Selector - For Testing Only
+              Development Login Mode Enabled
             </div>
             <select
               value={devRole}
