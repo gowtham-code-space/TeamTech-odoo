@@ -1,47 +1,139 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { formatDate } from '../utils/helpers';
 import {
   RiCpuLine,
-  RiExchangeLine,
-  RiCalendarCheckLine,
-  RiToolsLine,
+  RiBuildingLine,
+  RiUser3Line,
   RiAlertLine,
   RiRefreshLine,
+  RiDatabaseLine,
+  RiHeartPulseLine,
 } from 'react-icons/ri';
+import PieChart from '../components/charts/PieChart';
+import LineChart from '../components/charts/LineChart';
+import BarChart from '../components/charts/BarChart';
+import {
+  mockSuperAdminData,
+  mockAdminData,
+  mockAssetManagerData,
+  mockDepartmentHeadData,
+  mockEmployeeData,
+} from '../mock/dashboardData';
 
 export default function Dashboard() {
   const { user, role } = useAuthStore();
   const [viewState, setViewState] = useState('success'); // success | loading | empty | error
-  const [stats, setStats] = useState(null);
+
+  // Unified dynamic dashboard states
+  const [kpiMetrics, setKpiMetrics] = useState(null);
+  const [roleData, setRoleData] = useState(null);
 
   useEffect(() => {
     if (viewState === 'loading') {
-      setStats(null);
+      setKpiMetrics(null);
+      setRoleData(null);
     } else if (viewState === 'success') {
-      setStats({
-        total_assets: 148,
-        active_allocations: 86,
-        pending_bookings: 12,
-        active_maintenance: 5,
-        recent_activity: [
-          { id: 'act_1', type: 'allocation', description: 'Dell Latitude 5420 allocated to HR department', time: '2026-07-11T09:30:00Z' },
-          { id: 'act_2', type: 'maintenance', description: 'MacBook Pro 16 M1 entered under_maintenance', time: '2026-07-10T14:15:00Z' },
-          { id: 'act_3', type: 'booking', description: 'Conference Room B reserved for July 15', time: '2026-07-10T08:00:00Z' },
-        ],
-      });
+      if (role === 'SUPER_ADMIN') {
+        setKpiMetrics(mockSuperAdminData.kpi);
+        setRoleData(mockSuperAdminData);
+      } else if (role === 'ASSET_MANAGER') {
+        setKpiMetrics(mockAssetManagerData.kpi);
+        setRoleData(mockAssetManagerData);
+      } else if (role === 'DEPARTMENT_HEAD') {
+        setKpiMetrics(mockDepartmentHeadData.kpi);
+        setRoleData(mockDepartmentHeadData);
+      } else if (role === 'EMPLOYEE') {
+        setKpiMetrics(mockEmployeeData.kpi);
+        setRoleData(mockEmployeeData);
+      } else {
+        // Default to ADMIN
+        setKpiMetrics(mockAdminData.kpi);
+        setRoleData(mockAdminData);
+      }
     } else if (viewState === 'empty') {
-      setStats({
-        total_assets: 0,
-        active_allocations: 0,
-        pending_bookings: 0,
-        active_maintenance: 0,
-        recent_activity: [],
-      });
+      if (role === 'SUPER_ADMIN') {
+        setKpiMetrics({
+          total_organizations: 0,
+          active_organizations: 0,
+          total_users: 0,
+          total_assets: 0,
+          total_bookings: 0,
+          platform_health: '0.0%',
+          active_sessions: 0,
+          storage_usage: '0%',
+          api_health: '0.0%',
+          monthly_growth: '0%'
+        });
+        setRoleData({
+          organizationGrowthTrend: [],
+          tenantDistribution: [],
+          platformUsageTrend: [],
+          subscriptionDistribution: []
+        });
+      } else if (role === 'ASSET_MANAGER') {
+        setKpiMetrics({
+          managed_assets: 0,
+          pending_transfers: 0,
+          maintenance_requests: 0,
+          assets_under_maintenance: 0,
+          overdue_returns: 0
+        });
+        setRoleData({
+          maintenanceStatusDistribution: [],
+          assetAllocationTrend: [],
+          assetLifecycleDistribution: [],
+          mostRequestedAssets: []
+        });
+      } else if (role === 'DEPARTMENT_HEAD') {
+        setKpiMetrics({
+          department_assets: 0,
+          department_employees: 0,
+          active_bookings: 0,
+          pending_requests: 0,
+          maintenance_requests: 0
+        });
+        setRoleData({
+          departmentAssetUsage: [],
+          bookingTrend: [],
+          assetDistribution: [],
+          resourceUsage: []
+        });
+      } else if (role === 'EMPLOYEE') {
+        setKpiMetrics({
+          my_assets: 0,
+          upcoming_returns: 0,
+          active_bookings: 0,
+          open_maintenance_requests: 0
+        });
+        setRoleData({
+          myBookingHistory: [],
+          myAssetUsage: [],
+          maintenanceRequestHistory: []
+        });
+      } else {
+        setKpiMetrics({
+          total_assets: 0,
+          available_assets: 0,
+          active_bookings: 0,
+          pending_maintenance: 0,
+          overdue_returns: 0,
+          audit_issues: 0
+        });
+        setRoleData({
+          assetDistribution: [],
+          departmentDistribution: [],
+          maintenanceTrend: [],
+          bookingTrend: [],
+          topUsedAssets: [],
+          assetUtilizationRate: []
+        });
+      }
     } else {
-      setStats(null);
+      // error state
+      setKpiMetrics(null);
+      setRoleData(null);
     }
-  }, [viewState]);
+  }, [viewState, role]);
 
   return (
     <div className="space-y-6">
@@ -58,8 +150,8 @@ export default function Dashboard() {
               onClick={() => setViewState(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer ${
                 viewState === s
-                  ? 'bg-indigo-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                  ? 'bg-indigo-650 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-350 hover:bg-slate-700'
               }`}
             >
               {s}
@@ -70,20 +162,20 @@ export default function Dashboard() {
 
       {/* Header Info */}
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-950 tracking-tight">
-          Welcome back, {user?.name || 'User'}!
+        <h2 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+          Welcome back, {user?.full_name || 'Development User'}!
         </h2>
-        <p className="text-sm text-slate-500 mt-1">
-          Here is an overview of AssetFlow at your privilege level ({role}).
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+          Here is your personalized dashboard portal for role privileges: <span className="font-extrabold text-indigo-650 dark:text-indigo-400">{role}</span>
         </p>
       </div>
 
-      {/* Main Views */}
+      {/* API Connection Error State */}
       {viewState === 'error' && (
-        <div className="p-6 rounded-2xl bg-rose-50 border border-rose-200 text-center space-y-3">
+        <div className="p-6 rounded-2xl bg-rose-500/5 border border-rose-500/10 text-center space-y-3">
           <RiAlertLine className="w-12 h-12 text-rose-500 mx-auto" />
-          <h3 className="text-base font-bold text-rose-800">Failed to Load Dashboard Data</h3>
-          <p className="text-sm text-rose-600 max-w-md mx-auto">
+          <h3 className="text-base font-bold text-rose-700 dark:text-rose-450">Failed to Load Dashboard Data</h3>
+          <p className="text-sm text-rose-600 dark:text-rose-450 max-w-md mx-auto">
             An API error occurred while contacting the server. Ensure the backend database cluster is running.
           </p>
           <button
@@ -96,89 +188,328 @@ export default function Dashboard() {
         </div>
       )}
 
+      {/* KPI Loader Grid */}
       {viewState === 'loading' && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm animate-pulse space-y-3">
-              <div className="w-10 h-10 bg-slate-200 rounded-xl" />
-              <div className="h-4 bg-slate-200 rounded w-1/2" />
-              <div className="h-8 bg-slate-200 rounded w-1/3" />
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm animate-pulse space-y-3">
+              <div className="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-xl" />
+              <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-2/3" />
+              <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
             </div>
           ))}
         </div>
       )}
 
-      {stats && (
-        <>
-          {/* Stats Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Total Assets */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-indigo-50 text-indigo-600">
-                <RiCpuLine className="w-6 h-6" />
+      {/* -------------------------------------------------- */}
+      {/* 1. SUPER_ADMIN Dashboard Interface */}
+      {/* -------------------------------------------------- */}
+      {role === 'SUPER_ADMIN' && kpiMetrics && roleData && (
+        <div className="space-y-6">
+          {/* KPI Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider">Organizations</span>
+                <RiBuildingLine className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-400">Total Assets</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">{stats.total_assets}</p>
-              </div>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">
+                {kpiMetrics.active_organizations}/{kpiMetrics.total_organizations}
+              </p>
             </div>
-
-            {/* Active Allocations */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-emerald-50 text-emerald-600">
-                <RiExchangeLine className="w-6 h-6" />
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider">Total Users</span>
+                <RiUser3Line className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-400">Active Allocations</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">{stats.active_allocations}</p>
-              </div>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_users}</p>
             </div>
-
-            {/* Pending Bookings */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-amber-50 text-amber-600">
-                <RiCalendarCheckLine className="w-6 h-6" />
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider">Total Assets</span>
+                <RiCpuLine className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-400">Pending Bookings</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">{stats.pending_bookings}</p>
-              </div>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_assets}</p>
             </div>
-
-            {/* Active Maintenance */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4">
-              <div className="p-3 rounded-xl bg-rose-50 text-rose-600">
-                <RiToolsLine className="w-6 h-6" />
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider">Storage Usage</span>
+                <RiDatabaseLine className="w-4 h-4" />
               </div>
-              <div>
-                <p className="text-sm font-semibold text-slate-400">Active Maintenance</p>
-                <p className="text-2xl font-extrabold text-slate-800 mt-1">{stats.active_maintenance}</p>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.storage_usage}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+                <span className="text-[10px] font-bold uppercase tracking-wider">API Health</span>
+                <RiHeartPulseLine className="w-4 h-4 text-emerald-500" />
               </div>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.api_health}</p>
             </div>
           </div>
 
-          {/* Activity Section */}
-          <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
-            <h3 className="text-base font-bold text-slate-800 mb-4">Recent System Activities</h3>
-            {stats.recent_activity.length === 0 ? (
-              <div className="py-8 text-center text-slate-400 text-sm">
-                No recent activity records found on this node.
-              </div>
-            ) : (
-              <div className="divide-y divide-slate-100">
-                {stats.recent_activity.map((act) => (
-                  <div key={act.id} className="py-3 flex items-center justify-between text-sm">
-                    <div className="flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-indigo-500" />
-                      <span className="text-slate-700 font-medium">{act.description}</span>
-                    </div>
-                    <span className="text-slate-400 text-xs font-semibold">{formatDate(act.time)}</span>
-                  </div>
-                ))}
-              </div>
-            )}
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Organization Growth Trend</h4>
+              <LineChart
+                data={roleData.organizationGrowthTrend}
+                keys={['active', 'pending']}
+                keyLabels={{ active: 'Active Orgs', pending: 'Pending Approval' }}
+                colors={{ active: '#6366f1', pending: '#f59e0b' }}
+                isLoading={viewState === 'loading'}
+                error={viewState === 'error' ? 'Failed to fetch SaaS records' : null}
+              />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Tenant Distribution</h4>
+              <PieChart
+                data={roleData.tenantDistribution}
+                isLoading={viewState === 'loading'}
+                error={viewState === 'error' ? 'Failed to load distribution stats' : null}
+              />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm lg:col-span-2">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Platform Operations & User Growth</h4>
+              <LineChart
+                data={roleData.platformUsageTrend}
+                keys={['operations', 'users']}
+                keyLabels={{ operations: 'API Operations', users: 'Active Users' }}
+                colors={{ operations: '#10b981', users: '#8b5cf6' }}
+                isLoading={viewState === 'loading'}
+                error={viewState === 'error' ? 'Connection issues' : null}
+              />
+            </div>
           </div>
-        </>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 2. ADMIN Dashboard Interface */}
+      {/* -------------------------------------------------- */}
+      {role === 'ADMIN' && kpiMetrics && roleData && (
+        <div className="space-y-6">
+          {/* KPI Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Assets</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_assets}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Available</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.available_assets}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Maint</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_maintenance}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Overdue Returns</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.overdue_returns}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Audit Issues</span>
+              <p className="text-xl font-black text-slate-850 dark:text-white mt-2">{kpiMetrics.audit_issues}</p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Health Statuses</h4>
+              <PieChart data={roleData.assetDistribution} isLoading={viewState === 'loading'} />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Department Allocations</h4>
+              <BarChart data={roleData.departmentDistribution} layout="horizontal" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Top Utilized Resources</h4>
+              <BarChart data={roleData.topUsedAssets} layout="horizontal" barColor="#ec4899" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm lg:col-span-2">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Maintenance Job Trend</h4>
+              <LineChart
+                data={roleData.maintenanceTrend}
+                keys={['pending', 'approved', 'in_progress', 'resolved']}
+                keyLabels={{ pending: 'Pending', approved: 'Approved', in_progress: 'In Progress', resolved: 'Resolved' }}
+                colors={{ pending: '#94a3b8', approved: '#6366f1', in_progress: '#f59e0b', resolved: '#10b981' }}
+              />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Utilization Rate (%)</h4>
+              <LineChart
+                data={roleData.assetUtilizationRate}
+                keys={['rate']}
+                keyLabels={{ rate: 'Utilization %' }}
+                colors={{ rate: '#8b5cf6' }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 3. ASSET_MANAGER Dashboard Interface */}
+      {/* -------------------------------------------------- */}
+      {role === 'ASSET_MANAGER' && kpiMetrics && roleData && (
+        <div className="space-y-6">
+          {/* KPI Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Managed Assets</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.managed_assets}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Transfers</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_transfers}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Maint Requests</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.maintenance_requests}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Under Repair</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.assets_under_maintenance}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Overdue Returns</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.overdue_returns}</p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Repair Status Distribution</h4>
+              <PieChart data={roleData.maintenanceStatusDistribution} isLoading={viewState === 'loading'} />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Lifecycle Distribution</h4>
+              <PieChart data={roleData.assetLifecycleDistribution} isLoading={viewState === 'loading'} />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Most Requested Resources</h4>
+              <BarChart data={roleData.mostRequestedAssets} layout="horizontal" barColor="#f59e0b" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Allocation Trends</h4>
+              <LineChart
+                data={roleData.assetAllocationTrend}
+                keys={['allocated', 'returned']}
+                keyLabels={{ allocated: 'Allocated', returned: 'Returned' }}
+                colors={{ allocated: '#10b981', returned: '#ef4444' }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 4. DEPARTMENT_HEAD Dashboard Interface */}
+      {/* -------------------------------------------------- */}
+      {role === 'DEPARTMENT_HEAD' && kpiMetrics && roleData && (
+        <div className="space-y-6">
+          {/* KPI Grid */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Dept Assets</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.department_assets}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Staff Count</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.department_employees}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Requests</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_requests}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Repair Jobs</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.maintenance_requests}</p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Department Asset Status</h4>
+              <BarChart data={roleData.departmentAssetUsage} layout="horizontal" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Type Share</h4>
+              <PieChart data={roleData.assetDistribution} isLoading={viewState === 'loading'} />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Resource Utilization (%)</h4>
+              <BarChart data={roleData.resourceUsage} layout="horizontal" barColor="#a855f7" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Monthly Reservation Trend</h4>
+              <LineChart
+                data={roleData.bookingTrend}
+                keys={['bookings', 'hours']}
+                keyLabels={{ bookings: 'Bookings Count', hours: 'Total Hours' }}
+                colors={{ bookings: '#14b8a6', hours: '#ec4899' }}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------- */}
+      {/* 5. EMPLOYEE Dashboard Interface */}
+      {/* -------------------------------------------------- */}
+      {role === 'EMPLOYEE' && kpiMetrics && roleData && (
+        <div className="space-y-6">
+          {/* KPI Grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">My Handed Assets</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.my_assets}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Upcoming Returns</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.upcoming_returns}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">My Repair Tickets</span>
+              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.open_maintenance_requests}</p>
+            </div>
+          </div>
+
+          {/* Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Top Active Assets</h4>
+              <PieChart data={roleData.myAssetUsage} isLoading={viewState === 'loading'} />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Maintenance Tickets</h4>
+              <BarChart data={roleData.maintenanceRequestHistory} layout="horizontal" barColor="#f59e0b" />
+            </div>
+            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Booking Trend</h4>
+              <LineChart
+                data={roleData.myBookingHistory}
+                keys={['bookings', 'hours']}
+                keyLabels={{ bookings: 'Bookings', hours: 'Hours' }}
+                colors={{ bookings: '#6366f1', hours: '#14b8a6' }}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 const jwt = require('../utils/jwt');
-const db = require('../config/db');
+const { pool } = require('../config/db');
 const response = require('../utils/response');
 
 module.exports = async (req, res, next) => {
@@ -11,23 +11,24 @@ module.exports = async (req, res, next) => {
 
     const token = authHeader.split(' ')[1];
     const decoded = jwt.verifyToken(token);
-    if (!decoded) {
+    if (!decoded || !decoded.id) {
       return response.error(res, 'Invalid or expired token.', 401);
     }
 
     // Default user object constructed from decoded token
     let user = {
-      id: decoded.id || decoded.userId,
+      id: decoded.id,
       email: decoded.email,
       role: decoded.role,
-      organization_id: decoded.organization_id || decoded.organizationId || null,
-      tenant_id: decoded.tenant_id || decoded.tenantId || null
+      organization_id: decoded.organization_id || null,
+      tenant_id: decoded.tenant_id || null,
+      is_active: true
     };
 
     try {
       // Query users table to verify user exists in DB
-      const [users] = await db.query(
-        'SELECT id, name, email, role, organization_id, tenant_id FROM users WHERE id = ?',
+      const [users] = await pool.query(
+        'SELECT id, full_name, email, role, is_active, organization_id, tenant_id FROM users WHERE id = ?',
         [user.id]
       );
 
@@ -41,9 +42,14 @@ module.exports = async (req, res, next) => {
       console.warn('DB user check skipped, falling back to JWT payload details:', dbError.message);
     }
 
+    if (!user.is_active) {
+      return response.error(res, 'Your account has been deactivated. Please contact an Administrator.', 403);
+    }
+
     req.user = user;
     next();
   } catch (err) {
+    console.error('requireAuth middleware error:', err.message);
     return response.error(res, 'Authentication failed.', 401);
   }
 };

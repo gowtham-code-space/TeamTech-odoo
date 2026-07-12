@@ -1,50 +1,55 @@
 const ROLES = {
-  SUPER_ADMIN: 'Super Admin',
-  ADMIN: 'Admin',
-  ASSET_MANAGER: 'Asset Manager',
-  DEPT_HEAD: 'Department Head',
-  EMPLOYEE: 'Employee'
+  SUPER_ADMIN: 'SUPER_ADMIN',
+  ADMIN: 'ADMIN',
+  ASSET_MANAGER: 'ASSET_MANAGER',
+  DEPARTMENT_HEAD: 'DEPARTMENT_HEAD',
+  EMPLOYEE: 'EMPLOYEE',
 };
 
 const ASSET_STATUS = {
-  AVAILABLE: 'available',
-  ALLOCATED: 'allocated',
-  RESERVED: 'reserved',
-  UNDER_MAINTENANCE: 'under_maintenance',
-  LOST: 'lost',
-  RETIRED: 'retired',
-  DISPOSED: 'disposed'
+  AVAILABLE: 'AVAILABLE',
+  ALLOCATED: 'ALLOCATED',
+  RESERVED: 'RESERVED',
+  UNDER_MAINTENANCE: 'UNDER_MAINTENANCE',
+  LOST: 'LOST',
+  RETIRED: 'RETIRED',
+  DISPOSED: 'DISPOSED',
+};
+
+const ALLOCATION_STATUS = {
+  ACTIVE: 'ACTIVE',
+  RETURNED: 'RETURNED'
 };
 
 const BOOKING_STATUS = {
-  PENDING: 'pending',
-  APPROVED: 'approved',
-  REJECTED: 'rejected',
-  CANCELLED: 'cancelled'
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  COMPLETED: 'COMPLETED'
 };
 
 const MAINTENANCE_STATUS = {
-  SCHEDULED: 'scheduled',
-  IN_PROGRESS: 'in_progress',
-  RESOLVED: 'resolved',
-  CANCELLED: 'cancelled'
+  SCHEDULED: 'SCHEDULED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED'
 };
 
 const AUDIT_STATUS = {
-  VERIFIED: 'verified',
-  MISSING: 'missing',
-  DAMAGED: 'damaged'
+  VERIFIED: 'VERIFIED',
+  MISSING: 'MISSING',
+  DAMAGED: 'DAMAGED'
 };
 
 const NOTIFICATION_TYPE = {
-  INFO: 'info',
-  WARNING: 'warning',
-  ALERT: 'alert'
+  INFO: 'INFO',
+  WARNING: 'WARNING',
+  ALERT: 'ALERT'
 };
 
 module.exports = {
   ROLES,
   ASSET_STATUS,
+  ALLOCATION_STATUS,
   BOOKING_STATUS,
   MAINTENANCE_STATUS,
   AUDIT_STATUS,
