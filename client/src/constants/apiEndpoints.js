@@ -10,5 +10,9 @@ export const API_ENDPOINTS = {
   ALLOCATIONS: '/allocations',
   ALLOCATION_HISTORY: (id) => `/allocations/${id}/history`,
   AVAILABLE_ASSETS: '/assets/available',
+  BOOKINGS: '/bookings',
+  CALENDAR_BOOKINGS: '/bookings/calendar',
+  RESOURCES: '/resources',
+  AVAILABLE_RESOURCES: '/resources/available',
 };
 
