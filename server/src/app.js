@@ -63,6 +63,7 @@ const safeLoadRouter = (routePath) => {
 
 // API Routes Mounting
 app.use('/api/auth', safeLoadRouter('./routes/auth.routes'));
+app.use('/api/admin', safeLoadRouter('./routes/admin.routes'));
 app.use('/api/assets', safeLoadRouter('./routes/asset.routes'));
 app.use('/api/allocations', safeLoadRouter('./routes/allocation.routes'));
 app.use('/api/bookings', safeLoadRouter('./routes/booking.routes'));

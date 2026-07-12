@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+const bcrypt = require('bcryptjs');
 const config = require('./env');
 
 const pool = mysql.createPool({
@@ -12,17 +13,106 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
-// Test connection
-(async () => {
+// Initialize database schema and default seeds
+const initDb = async () => {
+  let connection;
   try {
-    const connection = await pool.getConnection();
-    console.log('Successfully connected to MySQL database.');
-    connection.release();
+    connection = await pool.getConnection();
+    console.log(`Successfully connected to MySQL database: "${config.db.database}"`);
+
+    // Create users table if not exists
+    const createUsersTableQuery = `
+      CREATE TABLE IF NOT EXISTS users (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        full_name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL UNIQUE,
+        password VARCHAR(255) NOT NULL,
+        role ENUM('ADMIN', 'ASSET_MANAGER', 'DEPARTMENT_HEAD', 'EMPLOYEE') NOT NULL DEFAULT 'EMPLOYEE',
+        is_active BOOLEAN NOT NULL DEFAULT TRUE,
+        department VARCHAR(255) DEFAULT NULL,
+        organization_id VARCHAR(255) DEFAULT NULL,
+        tenant_id VARCHAR(255) DEFAULT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    `;
+    await connection.query(createUsersTableQuery);
+    console.log('Verified database tables structure successfully.');
+
+    // DEVELOPMENT SEEDING ONLY:
+    // These accounts are seeded solely for development testing and system demo evaluation.
+    // Production Flow: 
+    // - New signups must always register as "EMPLOYEE" by default.
+    // - Elevated roles (ASSET_MANAGER, DEPARTMENT_HEAD) can only be granted by an ADMIN
+    //   via the Admin User Directory promotion workflow.
+    const { ROLES } = require('../utils/constants');
+    const seedUsers = [
+      {
+        full_name: 'System Admin',
+        email: 'admin@assetflow.com',
+        password: 'Admin@123',
+        role: ROLES.ADMIN,
+        department: 'IT Administration',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Asset Manager',
+        email: 'manager@assetflow.com',
+        password: 'Manager@123',
+        role: ROLES.ASSET_MANAGER,
+        department: 'Procurement',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Department Head',
+        email: 'hod@assetflow.com',
+        password: 'Hod@123',
+        role: ROLES.DEPARTMENT_HEAD,
+        department: 'Engineering',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      },
+      {
+        full_name: 'Regular Employee',
+        email: 'employee@assetflow.com',
+        password: 'Employee@123',
+        role: ROLES.EMPLOYEE,
+        department: 'Engineering',
+        organization_id: 'org_admin_flow',
+        tenant_id: 'ten_main_flow',
+      }
+    ];
+
+    let seedCount = 0;
+    for (const user of seedUsers) {
+      // Check if user exists by email
+      const [existing] = await connection.query('SELECT id FROM users WHERE email = ?', [user.email]);
+      if (existing.length === 0) {
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+        await connection.query(
+          `INSERT INTO users (full_name, email, password, role, department, organization_id, tenant_id) 
+           VALUES (?, ?, ?, ?, ?, ?, ?)`,
+          [user.full_name, user.email, hashedPassword, user.role, user.department, user.organization_id, user.tenant_id]
+        );
+        seedCount++;
+      }
+    }
+    if (seedCount > 0) {
+      console.log(`Seeded ${seedCount} default DEVELOPMENT demo accounts successfully.`);
+    }
   } catch (error) {
-    console.error('Database connection failed:', error.message);
-    console.log('Please ensure MySQL is running and database configuration in .env is correct.');
+    console.error('MySQL Connection or Setup failed:');
+    console.error(error.message);
+    console.log(`Please verify that MySQL server is active and the database "${config.db.database}" exists on host: ${config.db.host}:${config.db.port}`);
+    process.exit(1); // Stop execution on DB failure
+  } finally {
+    if (connection) connection.release();
   }
-})();
+};
+
+// Execute DB initialization
+initDb();
 
 module.exports = {
   pool,
