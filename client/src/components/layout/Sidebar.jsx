@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { ROLES } from '../../utils/constants';
 import {
   RiDashboardLine,
   RiBuildingLine,
@@ -16,15 +17,15 @@ import {
 } from 'react-icons/ri';
 
 const menuItems = [
-  { path: '/dashboard', label: 'Dashboard', icon: RiDashboardLine, roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'] },
-  { path: '/organization', label: 'Organization', icon: RiBuildingLine, roles: ['Admin', 'Asset Manager', 'Department Head'] },
-  { path: '/assets', label: 'Assets', icon: RiCpuLine, roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'] },
-  { path: '/allocation', label: 'Allocation', icon: RiExchangeLine, roles: ['Admin', 'Asset Manager', 'Department Head'] },
-  { path: '/booking', label: 'Booking', icon: RiCalendarCheckLine, roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'] },
-  { path: '/maintenance', label: 'Maintenance', icon: RiToolsLine, roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'] },
-  { path: '/audit', label: 'Audit', icon: RiShieldCheckLine, roles: ['Admin', 'Asset Manager'] },
-  { path: '/reports', label: 'Reports', icon: RiPieChartLine, roles: ['Admin', 'Asset Manager'] },
-  { path: '/notifications', label: 'Notifications', icon: RiNotification4Line, roles: ['Admin', 'Asset Manager', 'Department Head', 'Employee'] },
+  { path: '/dashboard', label: 'Dashboard', icon: RiDashboardLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/organization', label: 'Organization', icon: RiBuildingLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD] },
+  { path: '/assets', label: 'Assets', icon: RiCpuLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/allocation', label: 'Allocation', icon: RiExchangeLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD] },
+  { path: '/booking', label: 'Booking', icon: RiCalendarCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/maintenance', label: 'Maintenance', icon: RiToolsLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/audit', label: 'Audit', icon: RiShieldCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
+  { path: '/reports', label: 'Reports', icon: RiPieChartLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
+  { path: '/notifications', label: 'Notifications', icon: RiNotification4Line, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
 ];
 
 export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMobile }) {
