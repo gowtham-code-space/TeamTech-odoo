@@ -1,67 +1,7 @@
 const { pool } = require('../config/db');
 
-/**
- * Initialize organization tables on app startup if they do not exist.
- * This guarantees smooth functionality without requiring manual database migration runs.
- */
 const initTables = async () => {
-  let connection;
-  try {
-    connection = await pool.getConnection();
-
-    // 1. Create departments table
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS departments (
-        department_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        department_name VARCHAR(150) NOT NULL UNIQUE,
-        parent_department_id BIGINT UNSIGNED DEFAULT NULL,
-        department_head_id INT DEFAULT NULL,
-        description TEXT,
-        is_active TINYINT(1) DEFAULT 1,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        CONSTRAINT fk_dept_parent FOREIGN KEY (parent_department_id) REFERENCES departments(department_id) ON DELETE SET NULL ON UPDATE CASCADE,
-        CONSTRAINT fk_dept_head FOREIGN KEY (department_head_id) REFERENCES users(id) ON DELETE SET NULL ON UPDATE CASCADE
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-    `);
-
-    // 2. Create asset_categories table
-    await connection.query(`
-      CREATE TABLE IF NOT EXISTS asset_categories (
-        category_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-        category_name VARCHAR(100) NOT NULL UNIQUE,
-        description TEXT,
-        is_active TINYINT(1) DEFAULT 1,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-    `);
-
-    // 3. Ensure users table has department_id for relation support
-    const [columns] = await connection.query(`
-      SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS 
-      WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'users' AND COLUMN_NAME = 'department_id'
-    `);
-
-    if (columns.length === 0) {
-      try {
-        await connection.query(`
-          ALTER TABLE users ADD COLUMN department_id BIGINT UNSIGNED DEFAULT NULL
-        `);
-        await connection.query(`
-          ALTER TABLE users ADD CONSTRAINT fk_users_department_id 
-          FOREIGN KEY (department_id) REFERENCES departments(department_id) ON DELETE SET NULL ON UPDATE CASCADE
-        `);
-        console.log('Successfully added department_id column relation to users table.');
-      } catch (alterErr) {
-        console.warn('Could not add department_id to users:', alterErr.message);
-      }
-    }
-  } catch (err) {
-    console.error('Failed to initialize organization tables:', err.message);
-  } finally {
-    if (connection) connection.release();
-  }
+  // Handled in db.js central schema initialization
 };
 // Note: initTables is exported and called dynamically after db initialization
 
