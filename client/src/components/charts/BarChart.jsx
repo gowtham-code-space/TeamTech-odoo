@@ -11,9 +11,9 @@ export default function BarChart({
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-8 h-8 border-4 border-indigo-650 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
           <span className="text-xs font-semibold text-slate-400">Loading chart analytics...</span>
         </div>
       </div>
@@ -25,7 +25,7 @@ export default function BarChart({
       <div className="w-full h-64 flex items-center justify-center bg-rose-500/5 rounded-2xl border border-rose-500/10 select-none">
         <div className="text-center p-4">
           <p className="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1">Analytics Error</p>
-          <p className="text-sm font-semibold text-rose-600 dark:text-rose-400">{error}</p>
+          <p className="text-sm font-semibold text-rose-600">{error}</p>
         </div>
       </div>
     );
@@ -33,7 +33,7 @@ export default function BarChart({
 
   if (!data || data.length === 0) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <span className="text-xs font-semibold text-slate-400">No chart bar records found.</span>
       </div>
     );
@@ -58,15 +58,15 @@ export default function BarChart({
               onMouseLeave={() => setHoveredIdx(null)}
             >
               <div className="flex items-center justify-between text-xs font-bold">
-                <span className="text-slate-600 dark:text-slate-355 transition-colors group-hover:text-slate-800 dark:group-hover:text-white">
+                <span className="text-slate-600 transition-colors group-hover:text-slate-800">
                   {item.label}
                 </span>
-                <span className="text-slate-800 dark:text-slate-200">
+                <span className="text-slate-800">
                   {item.value}
                 </span>
               </div>
               {/* Bar Outer Track */}
-              <div className="w-full h-3 bg-slate-100 dark:bg-slate-800/80 rounded-full overflow-hidden border border-slate-200/20">
+              <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200/20">
                 {/* Bar Inner fill */}
                 <div
                   className="h-full rounded-full transition-all duration-500 ease-out"
@@ -103,7 +103,7 @@ export default function BarChart({
           >
             {/* Top Value badge */}
             <div
-              className={`text-[10px] font-black text-slate-800 dark:text-slate-200 mb-1 transition-opacity duration-150 ${
+              className={`text-[10px] font-black text-slate-800 mb-1 transition-opacity duration-150 ${
                 isHovered ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
               }`}
             >
@@ -111,7 +111,7 @@ export default function BarChart({
             </div>
 
             {/* Vertical Bar Outer Track */}
-            <div className="w-full flex-1 bg-slate-100 dark:bg-slate-800/80 rounded-t-xl overflow-hidden flex items-end relative border border-slate-200/20">
+            <div className="w-full flex-1 bg-slate-100 rounded-t-xl overflow-hidden flex items-end relative border border-slate-200/20">
               {/* Vertical Bar Inner fill */}
               <div
                 className="w-full rounded-t-xl transition-all duration-500 ease-out"
@@ -125,7 +125,7 @@ export default function BarChart({
             </div>
 
             {/* X Label */}
-            <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 mt-2 truncate w-full text-center">
+            <span className="text-[10px] font-bold text-slate-400 mt-2 truncate w-full text-center">
               {item.label}
             </span>
           </div>

@@ -13,9 +13,9 @@ export default function LineChart({
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-8 h-8 border-4 border-indigo-650 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
           <span className="text-xs font-semibold text-slate-400">Loading chart analytics...</span>
         </div>
       </div>
@@ -27,7 +27,7 @@ export default function LineChart({
       <div className="w-full h-64 flex items-center justify-center bg-rose-500/5 rounded-2xl border border-rose-500/10 select-none">
         <div className="text-center p-4">
           <p className="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1">Analytics Error</p>
-          <p className="text-sm font-semibold text-rose-600 dark:text-rose-400">{error}</p>
+          <p className="text-sm font-semibold text-rose-600">{error}</p>
         </div>
       </div>
     );
@@ -35,7 +35,7 @@ export default function LineChart({
 
   if (!data || data.length === 0 || keys.length === 0) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <span className="text-xs font-semibold text-slate-400">No chart trend records found.</span>
       </div>
     );
@@ -88,7 +88,7 @@ export default function LineChart({
   return (
     <div className="flex flex-col space-y-4">
       {/* Legend */}
-      <div className="flex flex-wrap gap-4 text-xs font-bold text-slate-500 dark:text-slate-450 select-none">
+      <div className="flex flex-wrap gap-4 text-xs font-bold text-slate-500 select-none">
         {keys.map((key) => (
           <div key={key} className="flex items-center gap-1.5">
             <span
@@ -103,12 +103,12 @@ export default function LineChart({
       {/* SVG Canvas */}
       <div className="relative">
         <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-auto overflow-visible select-none">
-          {/* Y Axis Grid lines */}
+          {/* Y Grid lines */}
           {[0, 0.25, 0.5, 0.75, 1].map((ratio, idx) => {
             const y = h - py - ratio * (h - 2 * py);
             const gridVal = Math.round(ratio * maxVal);
             return (
-              <g key={idx} className="opacity-40 dark:opacity-20">
+              <g key={idx} className="opacity-40">
                 <line
                   x1={px}
                   y1={y}
@@ -140,7 +140,7 @@ export default function LineChart({
                 <path
                   d={getAreaD(points)}
                   fill={`url(#gradient-${key})`}
-                  className="opacity-15 dark:opacity-25"
+                  className="opacity-15"
                 />
                 <defs>
                   <linearGradient id={`gradient-${key}`} x1="0" y1="0" x2="0" y2="1">
@@ -172,7 +172,7 @@ export default function LineChart({
                 x={x}
                 y={h - 10}
                 textAnchor="middle"
-                className="fill-slate-400 dark:fill-slate-500 font-bold text-[9px]"
+                className="fill-slate-400 font-bold text-[9px]"
               >
                 {d[xKey]}
               </text>

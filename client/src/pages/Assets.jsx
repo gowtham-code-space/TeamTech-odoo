@@ -119,8 +119,8 @@ export default function Assets() {
       {/* Header controls */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Assets Management</h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">View and manage organization hardware, software, and physical assets</p>
+          <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Assets Management</h2>
+          <p className="text-sm text-slate-500 mt-0.5">View and manage organization hardware, software, and physical assets</p>
         </div>
         
         {viewState === 'success' && (
@@ -136,58 +136,58 @@ export default function Assets() {
 
       {/* Add Asset Form */}
       {showAddForm && (
-        <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm relative animate-fade-in space-y-4">
-          <h3 className="text-base font-bold text-slate-800 dark:text-white">Register New Asset</h3>
+        <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm relative animate-fade-in space-y-4">
+          <h3 className="text-base font-bold text-slate-800">Register New Asset</h3>
           <form onSubmit={handleAddAsset} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Asset Tag (asset_tag)</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Asset Tag (asset_tag)</label>
               <input
                 type="text"
                 required
                 placeholder="AST-xxxx"
                 value={assetTag}
                 onChange={(e) => setAssetTag(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Asset Name (asset_name)</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Asset Name (asset_name)</label>
               <input
                 type="text"
                 required
                 placeholder="Macbook, Monitor..."
                 value={assetName}
                 onChange={(e) => setAssetName(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Category (category)</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Category (category)</label>
               <input
                 type="text"
                 required
                 placeholder="Hardware, Software..."
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Location (location)</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Location (location)</label>
               <input
                 type="text"
                 placeholder="Office Location..."
                 value={locationName}
                 onChange={(e) => setLocationName(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-500 dark:text-slate-400 uppercase mb-2">Status (status)</label>
+              <label className="block text-xs font-bold text-slate-500 uppercase mb-2">Status (status)</label>
               <select
                 value={initialStatus}
                 onChange={(e) => setInitialStatus(e.target.value)}
-                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
+                className="w-full px-4 py-2 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all"
               >
                 {Object.values(ASSET_STATUSES).map((status) => (
                   <option key={status} value={status}>
@@ -200,7 +200,7 @@ export default function Assets() {
               <button
                 type="button"
                 onClick={() => setShowAddForm(false)}
-                className="px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 font-bold text-sm cursor-pointer transition-colors"
+                className="px-4 py-2 text-slate-500 hover:text-slate-700 font-bold text-sm cursor-pointer transition-colors"
               >
                 Cancel
               </button>
@@ -217,17 +217,17 @@ export default function Assets() {
 
       {/* Error state */}
       {viewState === 'error' && (
-        <div className="p-12 rounded-2xl bg-rose-50 dark:bg-rose-500/5 border border-rose-200 dark:border-rose-500/20 text-center space-y-4">
+        <div className="p-12 rounded-2xl bg-rose-50 border border-rose-200 text-center space-y-4">
           <RiAlertLine className="w-16 h-16 text-rose-500 mx-auto" />
-          <h3 className="text-lg font-bold text-rose-800 dark:text-rose-400">Failed to Retrieve Assets</h3>
-          <p className="text-sm text-rose-600 dark:text-rose-400 max-w-lg mx-auto">
+          <h3 className="text-lg font-bold text-rose-800">Failed to Retrieve Assets</h3>
+          <p className="text-sm text-rose-600 max-w-lg mx-auto">
             An API communication failure occurred while resolving `/api/v1/assets`. Please verify connection parameters.
           </p>
           <button
             onClick={() => setViewState('success')}
             className="inline-flex items-center gap-2 px-5 py-2.5 bg-rose-600 hover:bg-rose-500 text-white text-sm font-bold rounded-xl shadow cursor-pointer"
           >
-            <RiRefreshLine className="w-4 h-4" />
+            <RiRefreshLine className="w-4 h-4 animate-spin-hover" />
             <span>Retry Connection</span>
           </button>
         </div>
@@ -235,15 +235,15 @@ export default function Assets() {
 
       {/* Loading skeleton */}
       {viewState === 'loading' && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden animate-pulse">
-          <div className="h-14 bg-slate-100 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700" />
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-pulse">
+          <div className="h-14 bg-slate-100 border-b border-slate-200" />
           <div className="p-4 space-y-4">
             {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="flex items-center justify-between py-2 border-b border-slate-100 dark:border-slate-800 last:border-0">
-                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/4" />
-                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-1/6" />
-                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-12" />
-                <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-24" />
+              <div key={i} className="flex items-center justify-between py-2 border-b border-slate-100 last:border-0">
+                <div className="h-4 bg-slate-200 rounded w-1/4" />
+                <div className="h-4 bg-slate-200 rounded w-1/6" />
+                <div className="h-4 bg-slate-200 rounded w-12" />
+                <div className="h-4 bg-slate-200 rounded w-24" />
               </div>
             ))}
           </div>
@@ -252,10 +252,10 @@ export default function Assets() {
 
       {/* Empty state */}
       {viewState === 'empty' && (
-        <div className="p-12 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-center">
-          <RiCpuLine className="w-16 h-16 text-slate-300 dark:text-slate-600 mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-slate-800 dark:text-white">No Assets Found</h3>
-          <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
+        <div className="p-12 rounded-2xl border-2 border-dashed border-slate-200 bg-white text-center">
+          <RiCpuLine className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-slate-800">No Assets Found</h3>
+          <p className="text-sm text-slate-500 max-w-sm mx-auto mt-1">
             There are currently no assets registered on this system node. Register a new asset to start.
           </p>
         </div>
@@ -263,10 +263,10 @@ export default function Assets() {
 
       {/* Data table */}
       {viewState === 'success' && assets.length > 0 && (
-        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left text-sm">
-              <thead className="bg-slate-50 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
+              <thead className="bg-slate-50 text-slate-500 border-b border-slate-200">
                 <tr>
                   <th className="px-6 py-4 font-semibold uppercase tracking-wider text-[10px]">Asset Name / ID</th>
                   <th className="px-6 py-4 font-semibold uppercase tracking-wider text-[10px]">Asset Tag</th>
@@ -277,21 +277,21 @@ export default function Assets() {
                   <th className="px-6 py-4 font-semibold uppercase tracking-wider text-[10px]">Created Date</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100">
                 {assets.map((asset) => (
-                  <tr key={asset.asset_id} className="hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+                  <tr key={asset.asset_id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4">
-                      <p className="font-bold text-slate-800 dark:text-slate-100">{asset.asset_name}</p>
-                      <p className="text-slate-400 dark:text-slate-500 text-xs mt-0.5">{asset.asset_id}</p>
+                      <p className="font-bold text-slate-800">{asset.asset_name}</p>
+                      <p className="text-slate-400 text-xs mt-0.5">{asset.asset_id}</p>
                     </td>
-                    <td className="px-6 py-4 font-mono font-medium text-slate-500 dark:text-slate-400">{asset.asset_tag}</td>
-                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{asset.category}</td>
-                    <td className="px-6 py-4 text-slate-600 dark:text-slate-300">{asset.location}</td>
+                    <td className="px-6 py-4 font-mono font-medium text-slate-500">{asset.asset_tag}</td>
+                    <td className="px-6 py-4 text-slate-600">{asset.category}</td>
+                    <td className="px-6 py-4 text-slate-600">{asset.location}</td>
                     <td className="px-6 py-4">
                       {asset.assigned_to ? (
-                        <span className="font-semibold text-slate-800 dark:text-slate-100">{asset.assigned_to}</span>
+                        <span className="font-semibold text-slate-800">{asset.assigned_to}</span>
                       ) : (
-                        <span className="text-slate-400 dark:text-slate-500 italic">Unassigned</span>
+                        <span className="text-slate-400 italic">Unassigned</span>
                       )}
                     </td>
                     <td className="px-6 py-4">
@@ -299,7 +299,7 @@ export default function Assets() {
                         {asset.status.replace('_', ' ')}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-slate-400 dark:text-slate-500 text-xs font-semibold">{formatDate(asset.created_at)}</td>
+                    <td className="px-6 py-4 text-slate-400 text-xs font-semibold">{formatDate(asset.created_at)}</td>
                   </tr>
                 ))}
               </tbody>

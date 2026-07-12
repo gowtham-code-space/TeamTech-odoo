@@ -16,9 +16,9 @@ export default function PieChart({ data = [], isLoading = false, error = null })
 
   if (isLoading) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-8 h-8 border-4 border-indigo-650 border-t-transparent rounded-full animate-spin" />
+          <div className="w-8 h-8 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
           <span className="text-xs font-semibold text-slate-400">Loading chart analytics...</span>
         </div>
       </div>
@@ -30,7 +30,7 @@ export default function PieChart({ data = [], isLoading = false, error = null })
       <div className="w-full h-64 flex items-center justify-center bg-rose-500/5 rounded-2xl border border-rose-500/10 select-none">
         <div className="text-center p-4">
           <p className="text-xs font-bold text-rose-500 uppercase tracking-wider mb-1">Analytics Error</p>
-          <p className="text-sm font-semibold text-rose-600 dark:text-rose-400">{error}</p>
+          <p className="text-sm font-semibold text-rose-600">{error}</p>
         </div>
       </div>
     );
@@ -39,7 +39,7 @@ export default function PieChart({ data = [], isLoading = false, error = null })
   const validData = data.filter((item) => item.value > 0);
   if (validData.length === 0) {
     return (
-      <div className="w-full h-64 flex items-center justify-center bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-slate-100 dark:border-slate-800 select-none">
+      <div className="w-full h-64 flex items-center justify-center bg-slate-50 rounded-2xl border border-slate-100 select-none">
         <span className="text-xs font-semibold text-slate-400">No chart distribution records found.</span>
       </div>
     );
@@ -98,7 +98,7 @@ export default function PieChart({ data = [], isLoading = false, error = null })
         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
           {hoveredIdx !== null ? (
             <>
-              <span className="text-lg font-black text-slate-800 dark:text-white">
+              <span className="text-lg font-black text-slate-800">
                 {segments[hoveredIdx].value}
               </span>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
@@ -107,7 +107,7 @@ export default function PieChart({ data = [], isLoading = false, error = null })
             </>
           ) : (
             <>
-              <span className="text-lg font-black text-slate-800 dark:text-white">
+              <span className="text-lg font-black text-slate-800">
                 {total}
               </span>
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wide">
@@ -126,19 +126,19 @@ export default function PieChart({ data = [], isLoading = false, error = null })
             <div
               key={idx}
               className={`flex items-center justify-between p-1.5 rounded-lg transition-all duration-200 ${
-                isHovered ? 'bg-slate-50 dark:bg-slate-800/60' : ''
+                isHovered ? 'bg-slate-50' : ''
               }`}
               onMouseEnter={() => setHoveredIdx(idx)}
               onMouseLeave={() => setHoveredIdx(null)}
             >
-              <div className="flex items-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300">
+              <div className="flex items-center gap-2 text-xs font-semibold text-slate-650">
                 <span
                   className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                   style={{ backgroundColor: seg.color }}
                 />
                 <span>{seg.label}</span>
               </div>
-              <span className="text-xs font-extrabold text-slate-800 dark:text-white">
+              <span className="text-xs font-extrabold text-slate-800">
                 {seg.value} ({seg.percentage}%)
               </span>
             </div>

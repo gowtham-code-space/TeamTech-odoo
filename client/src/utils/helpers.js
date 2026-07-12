@@ -24,84 +24,84 @@ export const getStatusColor = (status, type) => {
       case 'active':
       case '1':
       case 'true':
-        return 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
       case 'inactive':
       case 'deactivated':
       case '0':
       case 'false':
-        return 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30';
+        return 'bg-rose-50 text-rose-700 border border-rose-200';
       default:
-        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700';
+        return 'bg-slate-100 text-slate-700 border border-slate-200';
     }
   }
 
   if (type === 'role') {
     switch (normalized) {
       case 'admin':
-        return 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30';
+        return 'bg-rose-50 text-rose-700 border border-rose-200';
       case 'asset_manager':
-        return 'bg-indigo-50 dark:bg-indigo-950/20 text-indigo-700 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-900/30';
+        return 'bg-indigo-50 text-indigo-700 border border-indigo-200';
       case 'department_head':
-        return 'bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'employee':
-        return 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/30';
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
       default:
-        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-350 border border-slate-200 dark:border-slate-750';
+        return 'bg-slate-100 text-slate-700 border border-slate-200';
     }
   }
 
   if (type === 'asset') {
     switch (normalized) {
       case 'available':
-        return 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
       case 'allocated':
-        return 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/30';
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
       case 'reserved':
-        return 'bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-455 border border-amber-200 dark:border-amber-900/30';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'under_maintenance':
-        return 'bg-orange-50 dark:bg-orange-950/20 text-orange-700 dark:text-orange-400 border border-orange-200 dark:border-orange-900/30';
+        return 'bg-orange-50 text-orange-700 border border-orange-200';
       case 'lost':
-        return 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30';
+        return 'bg-rose-50 text-rose-700 border border-rose-200';
       case 'retired':
-        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700';
+        return 'bg-slate-100 text-slate-700 border border-slate-300';
       case 'disposed':
-        return 'bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-350 border border-zinc-300 dark:border-zinc-700';
+        return 'bg-zinc-100 text-zinc-700 border border-zinc-300';
       default:
-        return 'bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
+        return 'bg-gray-50 text-gray-700 border border-gray-200';
     }
   }
   
   if (type === 'booking') {
     switch (normalized) {
       case 'pending':
-        return 'bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'approved':
-        return 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
       case 'rejected':
-        return 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30';
+        return 'bg-rose-50 text-rose-700 border border-rose-200';
       case 'cancelled':
-        return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700';
+        return 'bg-slate-100 text-slate-700 border border-slate-300';
       default:
-        return 'bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
+        return 'bg-gray-50 text-gray-700 border border-gray-200';
     }
   }
 
   if (type === 'maintenance') {
     switch (normalized) {
       case 'scheduled':
-        return 'bg-blue-50 dark:bg-blue-950/20 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-900/30';
+        return 'bg-blue-50 text-blue-700 border border-blue-200';
       case 'in_progress':
-        return 'bg-amber-50 dark:bg-amber-950/20 text-amber-700 dark:text-amber-450 border border-amber-200 dark:border-amber-900/30';
+        return 'bg-amber-50 text-amber-700 border border-amber-200';
       case 'resolved':
-        return 'bg-emerald-50 dark:bg-emerald-950/20 text-emerald-700 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-900/30';
+        return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
       case 'cancelled':
-        return 'bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-900/30';
+        return 'bg-rose-50 text-rose-700 border border-rose-200';
       default:
-        return 'bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
+        return 'bg-gray-50 text-gray-700 border border-gray-200';
     }
   }
 
-  return 'bg-gray-50 dark:bg-slate-800 text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-700';
+  return 'bg-gray-50 text-gray-700 border border-gray-200';
 };
 
 export const capitalize = (str) => {

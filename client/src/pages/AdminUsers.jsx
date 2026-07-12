@@ -122,13 +122,13 @@ export default function AdminUsers() {
       accessor: 'full_name',
       render: (row) => (
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-indigo-50 dark:bg-slate-800 flex items-center justify-center font-bold text-xs text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-slate-700 uppercase">
+          <div className="w-8 h-8 rounded-full bg-indigo-550 flex items-center justify-center font-bold text-xs text-white uppercase">
             {row.full_name.slice(0, 2)}
           </div>
           <div>
-            <p className="font-semibold text-slate-800 dark:text-slate-200">{row.full_name}</p>
+            <p className="font-semibold text-slate-800">{row.full_name}</p>
             {row.id === loggedInUser?.id && (
-              <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 px-1.5 py-0.5 rounded font-bold">You</span>
+              <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-bold">You</span>
             )}
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function AdminUsers() {
     {
       header: 'Department',
       accessor: 'department',
-      render: (row) => row.department || <span className="text-slate-400 dark:text-slate-650 italic">No Dept</span>,
+      render: (row) => row.department || <span className="text-slate-400 italic">No Dept</span>,
     },
     {
       header: 'Current Role',
@@ -175,7 +175,7 @@ export default function AdminUsers() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 border-indigo-200 dark:border-slate-700 text-indigo-650 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/20"
+                    className="h-8 border-indigo-200 text-indigo-650 hover:bg-indigo-50"
                     icon={RiUserSharedLine}
                     onClick={() => openActionModal(row, 'promote')}
                   >
@@ -185,7 +185,7 @@ export default function AdminUsers() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="h-8 border-rose-200 dark:border-rose-950/30 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/20"
+                    className="h-8 border-rose-250 text-rose-600 hover:bg-rose-50"
                     icon={RiUserUnfollowLine}
                     onClick={() => openActionModal(row, 'demote')}
                   >
@@ -202,8 +202,8 @@ export default function AdminUsers() {
                 size="sm"
                 className={`h-8 ${
                   row.is_active
-                    ? 'border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800'
-                    : 'border-emerald-250 dark:border-emerald-950 text-emerald-600 dark:text-emerald-450 hover:bg-emerald-50 dark:hover:bg-emerald-950/10'
+                    ? 'border-slate-200 text-slate-600 hover:bg-slate-50'
+                    : 'border-emerald-250 text-emerald-600 hover:bg-emerald-50'
                 }`}
                 icon={row.is_active ? RiCloseCircleLine : RiCheckboxCircleLine}
                 onClick={() => openActionModal(row, 'status')}
@@ -218,7 +218,7 @@ export default function AdminUsers() {
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 text-left dark:text-slate-100">
+    <div className="max-w-7xl mx-auto px-4 md:px-6 py-6 text-left">
       {/* Header section with Breadcrumbs */}
       <PageHeader
         title="Organization User Directory"
@@ -227,7 +227,7 @@ export default function AdminUsers() {
       />
 
       {/* Query Filters Board */}
-      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5 mb-6 transition-colors duration-200">
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 mb-6 transition-colors duration-200">
         <form onSubmit={handleSearchSubmit} className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
           {/* Search name or email */}
           <div className="md:col-span-2 col-span-1">
@@ -242,17 +242,17 @@ export default function AdminUsers() {
 
           {/* Role Filter dropdown */}
           <div className="flex flex-col space-y-1.5 col-span-1">
-            <label className="text-xs font-bold text-slate-550 dark:text-slate-400 uppercase tracking-wider select-none">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider select-none">
               Filter by Role
             </label>
             <select
               value={roleFilter}
               onChange={(e) => setRoleFilter(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-250 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
             >
               <option value="">All Roles</option>
               {Object.values(ROLES).map((roleVal) => (
-                <option key={roleVal} value={roleVal} className="bg-white dark:bg-slate-900">
+                <option key={roleVal} value={roleVal} className="bg-white">
                   {ROLE_LABELS[roleVal]}
                 </option>
               ))}
@@ -261,17 +261,17 @@ export default function AdminUsers() {
 
           {/* Department Filter dropdown */}
           <div className="flex flex-col space-y-1.5 col-span-1">
-            <label className="text-xs font-bold text-slate-555 dark:text-slate-400 uppercase tracking-wider select-none">
+            <label className="text-xs font-bold text-slate-500 uppercase tracking-wider select-none">
               Filter by Department
             </label>
             <select
               value={deptFilter}
               onChange={(e) => setDeptFilter(e.target.value)}
-              className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800/50 border border-slate-250 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
+              className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
             >
               <option value="">All Departments</option>
               {DEPARTMENTS.map((dept) => (
-                <option key={dept} value={dept} className="bg-white dark:bg-slate-900">
+                <option key={dept} value={dept} className="bg-white">
                   {dept}
                 </option>
               ))}
@@ -282,7 +282,7 @@ export default function AdminUsers() {
 
       {/* API Error warning */}
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-450 text-sm font-semibold select-none animate-fade-in">
+        <div className="mb-6 p-4 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 text-sm font-semibold select-none animate-fade-in">
           {error}
         </div>
       )}
@@ -327,9 +327,9 @@ export default function AdminUsers() {
             </div>
           }
         >
-          <div className="space-y-4 text-slate-600 dark:text-slate-300 text-left">
+          <div className="space-y-4 text-slate-600 text-left">
             {actionError && (
-              <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 dark:text-rose-450 text-xs font-semibold select-none">
+              <div className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-600 text-xs font-semibold select-none">
                 {actionError}
               </div>
             )}
@@ -337,16 +337,16 @@ export default function AdminUsers() {
             {modalType === 'promote' && (
               <div className="space-y-4">
                 <p className="text-sm">
-                  You are elevating <span className="font-bold text-slate-850 dark:text-white">{selectedUser.full_name}</span>. Please choose the target administrative role:
+                  You are elevating <span className="font-bold text-slate-800">{selectedUser.full_name}</span>. Please choose the target administrative role:
                 </p>
                 <div className="flex flex-col space-y-1.5 text-left">
-                  <label className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider select-none">
+                  <label className="text-xs font-bold text-slate-500 uppercase tracking-wider select-none">
                     Target Promotion Role
                   </label>
                   <select
                     value={targetRole}
                     onChange={(e) => setTargetRole(e.target.value)}
-                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-slate-800 dark:text-slate-100 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
+                    className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-800 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all cursor-pointer"
                   >
                     <option value={ROLES.ASSET_MANAGER}>Asset Manager</option>
                     <option value={ROLES.DEPARTMENT_HEAD}>Department Head</option>
@@ -357,13 +357,13 @@ export default function AdminUsers() {
 
             {modalType === 'demote' && (
               <p className="text-sm">
-                Are you sure you want to demote <span className="font-bold text-slate-850 dark:text-white">{selectedUser.full_name}</span> back to <span className="font-semibold text-indigo-650 dark:text-indigo-400">Employee</span>? They will lose all department head/asset management dashboard privileges.
+                Are you sure you want to demote <span className="font-bold text-slate-800">{selectedUser.full_name}</span> back to <span className="font-semibold text-indigo-600">Employee</span>? They will lose all department head/asset management dashboard privileges.
               </p>
             )}
 
             {modalType === 'status' && (
               <p className="text-sm">
-                Are you sure you want to {selectedUser.is_active ? 'deactivate' : 'activate'} the account of <span className="font-bold text-slate-850 dark:text-white">{selectedUser.full_name}</span>?
+                Are you sure you want to {selectedUser.is_active ? 'deactivate' : 'activate'} the account of <span className="font-bold text-slate-800">{selectedUser.full_name}</span>?
                 {selectedUser.is_active && ' They will be blocked from logging into the platform immediately.'}
               </p>
             )}

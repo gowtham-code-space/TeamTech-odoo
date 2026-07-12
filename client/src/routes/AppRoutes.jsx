@@ -49,10 +49,10 @@ function UnauthorizedPage() {
           <p className="text-xs font-black uppercase tracking-widest text-rose-500 mb-2">
             Error 403 — Unauthorized
           </p>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
             Access Denied
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 leading-relaxed">
+          <p className="text-slate-500 text-sm mt-3 leading-relaxed">
             You do not have the required permissions to access this page.
             Contact your Administrator to request elevated access.
           </p>
@@ -69,7 +69,7 @@ function UnauthorizedPage() {
           </Link>
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-xl transition-colors cursor-pointer"
           >
             <RiArrowLeftLine className="w-4 h-4" />
             <span>Go Back</span>
@@ -85,15 +85,15 @@ function UnauthorizedPage() {
 // ---------------------------------------------------------------
 function NotFoundPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50 dark:bg-slate-950">
+    <div className="min-h-screen flex items-center justify-center px-4 bg-slate-50">
       <div className="text-center max-w-md space-y-6">
         {/* Icon */}
-        <div className="flex items-center justify-center mx-auto w-20 h-20 rounded-3xl bg-slate-200/60 dark:bg-slate-800/60 border border-slate-300/40 dark:border-slate-700/40">
+        <div className="flex items-center justify-center mx-auto w-20 h-20 rounded-3xl bg-slate-200/60 border border-slate-300/40">
           <RiSearchLine className="w-10 h-10 text-slate-400" />
         </div>
 
         {/* Large 404 numeral */}
-        <p className="text-8xl font-black text-slate-200 dark:text-slate-800 select-none leading-none">
+        <p className="text-8xl font-black text-slate-200 select-none leading-none">
           404
         </p>
 
@@ -102,10 +102,10 @@ function NotFoundPage() {
           <p className="text-xs font-black uppercase tracking-widest text-slate-400 mb-2">
             Page Not Found
           </p>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">
             Oops! Wrong Turn
           </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 leading-relaxed">
+          <p className="text-slate-500 text-sm mt-3 leading-relaxed">
             The page you are looking for does not exist or has been moved.
             Please check the URL or return to the dashboard.
           </p>
@@ -122,7 +122,7 @@ function NotFoundPage() {
           </Link>
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-sm font-bold rounded-xl transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-bold rounded-xl transition-colors cursor-pointer"
           >
             <RiArrowLeftLine className="w-4 h-4" />
             <span>Go Back</span>

@@ -31,12 +31,12 @@ import {
 
 // Universal KPIs — shared across all roles (mock values, API-ready)
 const UNIVERSAL_KPIS = [
-  { key: 'assetsAvailable',  label: 'Assets Available',   value: 120, color: '#10b981', icon: RiCpuLine,          badge: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
-  { key: 'assetsAllocated',  label: 'Assets Allocated',   value: 85,  color: '#6366f1', icon: RiExchangeLine,      badge: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' },
-  { key: 'activeBookings',   label: 'Active Bookings',    value: 23,  color: '#3b82f6', icon: RiCalendarCheckLine, badge: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
-  { key: 'maintenanceToday', label: 'Maintenance Today',  value: 7,   color: '#f59e0b', icon: RiToolsLine,         badge: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
-  { key: 'pendingTransfers', label: 'Pending Transfers',  value: 4,   color: '#8b5cf6', icon: RiExchangeLine,      badge: 'bg-violet-500/10 text-violet-600 dark:text-violet-400' },
-  { key: 'upcomingReturns',  label: 'Upcoming Returns',   value: 12,  color: '#ec4899', icon: RiTimeLine,          badge: 'bg-pink-500/10 text-pink-600 dark:text-pink-400' },
+  { key: 'assetsAvailable',  label: 'Assets Available',   value: 120, color: '#10b981', icon: RiCpuLine,          badge: 'bg-emerald-500/10 text-emerald-600' },
+  { key: 'assetsAllocated',  label: 'Assets Allocated',   value: 85,  color: '#6366f1', icon: RiExchangeLine,      badge: 'bg-indigo-500/10 text-indigo-600' },
+  { key: 'activeBookings',   label: 'Active Bookings',    value: 23,  color: '#3b82f6', icon: RiCalendarCheckLine, badge: 'bg-blue-500/10 text-blue-600' },
+  { key: 'maintenanceToday', label: 'Maintenance Today',  value: 7,   color: '#f59e0b', icon: RiToolsLine,         badge: 'bg-amber-500/10 text-amber-600' },
+  { key: 'pendingTransfers', label: 'Pending Transfers',  value: 4,   color: '#8b5cf6', icon: RiExchangeLine,      badge: 'bg-violet-500/10 text-violet-600' },
+  { key: 'upcomingReturns',  label: 'Upcoming Returns',   value: 12,  color: '#ec4899', icon: RiTimeLine,          badge: 'bg-pink-500/10 text-pink-600' },
 ];
 
 // Quick Actions — visible to all authenticated users
@@ -179,8 +179,8 @@ export default function Dashboard() {
               onClick={() => setViewState(s)}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold capitalize transition-all cursor-pointer ${
                 viewState === s
-                  ? 'bg-indigo-650 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-350 hover:bg-slate-700'
+                  ? 'bg-indigo-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-355 hover:bg-slate-700'
               }`}
             >
               {s}
@@ -191,17 +191,15 @@ export default function Dashboard() {
 
       {/* Header Info */}
       <div>
-        <h2 className="text-2xl font-extrabold text-slate-950 dark:text-white tracking-tight">
+        <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">
           Welcome back, {user?.full_name || 'Development User'}!
         </h2>
-        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-          Here is your personalized dashboard portal for role privileges: <span className="font-extrabold text-indigo-650 dark:text-indigo-400">{role}</span>
+        <p className="text-sm text-slate-500 mt-1">
+          Here is your personalized dashboard portal for role privileges: <span className="font-extrabold text-indigo-600">{role}</span>
         </p>
       </div>
 
-      {/* ------------------------------------------------------ */}
       {/* Universal 6-KPI Row — visible to ALL authenticated roles */}
-      {/* ------------------------------------------------------ */}
       {viewState !== 'error' && (
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           {UNIVERSAL_KPIS.map((kpi) => {
@@ -209,13 +207,13 @@ export default function Dashboard() {
             return (
               <div
                 key={kpi.key}
-                className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group"
+                className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group"
               >
                 {viewState === 'loading' ? (
                   <div className="space-y-3 animate-pulse">
-                    <div className="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800" />
-                    <div className="h-3 rounded bg-slate-200 dark:bg-slate-800 w-2/3" />
-                    <div className="h-6 rounded bg-slate-200 dark:bg-slate-800 w-1/2" />
+                    <div className="w-8 h-8 rounded-xl bg-slate-200" />
+                    <div className="h-3 rounded bg-slate-200 w-2/3" />
+                    <div className="h-6 rounded bg-slate-200 w-1/2" />
                   </div>
                 ) : (
                   <>
@@ -224,7 +222,7 @@ export default function Dashboard() {
                       <Icon className="w-[18px] h-[18px]" />
                     </div>
                     {/* Label */}
-                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 leading-none mb-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 leading-none mb-1.5">
                       {kpi.label}
                     </p>
                     {/* Value */}
@@ -242,15 +240,13 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* ------------------------------------------------------ */}
-      {/* Quick Actions Panel — visible to ALL authenticated roles */}
-      {/* ------------------------------------------------------ */}
+      {/* Quick Actions Panel — visible to ALL authenticated users */}
       {viewState === 'success' && (
-        <div className="bg-white dark:bg-slate-900/60 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+        <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-6">
           <div className="flex items-center justify-between mb-5">
             <div>
-              <h3 className="text-sm font-black text-slate-800 dark:text-white">Quick Actions</h3>
-              <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Jump to key workflows from your dashboard</p>
+              <h3 className="text-sm font-black text-slate-800">Quick Actions</h3>
+              <p className="text-xs text-slate-400 mt-0.5">Jump to key workflows from your dashboard</p>
             </div>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
@@ -258,7 +254,7 @@ export default function Dashboard() {
               <button
                 key={action.path}
                 onClick={() => navigate(action.path)}
-                className="group flex flex-col items-start gap-3 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all duration-200 text-left cursor-pointer"
+                className="group flex flex-col items-start gap-3 p-4 rounded-2xl border border-slate-200 hover:border-indigo-300 hover:bg-indigo-50/50 transition-all duration-200 text-left cursor-pointer"
               >
                 {/* Action icon */}
                 <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-600/20 group-hover:shadow-md group-hover:shadow-indigo-600/25 transition-shadow">
@@ -266,15 +262,15 @@ export default function Dashboard() {
                 </div>
                 {/* Action label */}
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs font-black text-slate-800 dark:text-slate-100 leading-tight">
+                  <p className="text-xs font-black text-slate-800 leading-tight">
                     {action.label}
                   </p>
-                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 leading-snug">
+                  <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
                     {action.desc}
                   </p>
                 </div>
                 {/* Arrow */}
-                <RiArrowRightLine className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all self-end" />
+                <RiArrowRightLine className="w-3.5 h-3.5 text-slate-300 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all self-end" />
               </button>
             ))}
           </div>
@@ -283,10 +279,10 @@ export default function Dashboard() {
 
       {/* API Connection Error State */}
       {viewState === 'error' && (
-        <div className="p-6 rounded-2xl bg-rose-500/5 border border-rose-500/10 text-center space-y-3">
+        <div className="p-6 rounded-2xl bg-rose-50 border border-rose-200 text-center space-y-3">
           <RiAlertLine className="w-12 h-12 text-rose-500 mx-auto" />
-          <h3 className="text-base font-bold text-rose-700 dark:text-rose-450">Failed to Load Dashboard Data</h3>
-          <p className="text-sm text-rose-600 dark:text-rose-450 max-w-md mx-auto">
+          <h3 className="text-base font-bold text-rose-700">Failed to Load Dashboard Data</h3>
+          <p className="text-sm text-rose-650 max-w-md mx-auto">
             An API error occurred while contacting the server. Ensure the backend database cluster is running.
           </p>
           <button
@@ -303,65 +299,63 @@ export default function Dashboard() {
       {viewState === 'loading' && (
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm animate-pulse space-y-3">
-              <div className="w-8 h-8 bg-slate-200 dark:bg-slate-800 rounded-xl" />
-              <div className="h-3 bg-slate-200 dark:bg-slate-800 rounded w-2/3" />
-              <div className="h-6 bg-slate-200 dark:bg-slate-800 rounded w-1/2" />
+            <div key={i} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm animate-pulse space-y-3">
+              <div className="w-8 h-8 bg-slate-200 rounded-xl" />
+              <div className="h-3 bg-slate-200 rounded w-2/3" />
+              <div className="h-6 bg-slate-200 rounded w-1/2" />
             </div>
           ))}
         </div>
       )}
 
-      {/* -------------------------------------------------- */}
       {/* 1. SUPER_ADMIN Dashboard Interface */}
-      {/* -------------------------------------------------- */}
       {role === 'SUPER_ADMIN' && kpiMetrics && roleData && (
         <div className="space-y-6">
           {/* KPI Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400">
                 <span className="text-[10px] font-bold uppercase tracking-wider">Organizations</span>
                 <RiBuildingLine className="w-4 h-4" />
               </div>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">
+              <p className="text-xl font-black text-slate-800 mt-2">
                 {kpiMetrics.active_organizations}/{kpiMetrics.total_organizations}
               </p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400">
                 <span className="text-[10px] font-bold uppercase tracking-wider">Total Users</span>
                 <RiUser3Line className="w-4 h-4" />
               </div>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_users}</p>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.total_users}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400">
                 <span className="text-[10px] font-bold uppercase tracking-wider">Total Assets</span>
                 <RiCpuLine className="w-4 h-4" />
               </div>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_assets}</p>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.total_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400">
                 <span className="text-[10px] font-bold uppercase tracking-wider">Storage Usage</span>
                 <RiDatabaseLine className="w-4 h-4" />
               </div>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.storage_usage}</p>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.storage_usage}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <div className="flex items-center justify-between text-slate-400 dark:text-slate-500">
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <div className="flex items-center justify-between text-slate-400">
                 <span className="text-[10px] font-bold uppercase tracking-wider">API Health</span>
                 <RiHeartPulseLine className="w-4 h-4 text-emerald-500" />
               </div>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.api_health}</p>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.api_health}</p>
             </div>
           </div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Organization Growth Trend</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Organization Growth Trend</h4>
               <LineChart
                 data={roleData.organizationGrowthTrend}
                 keys={['active', 'pending']}
@@ -371,16 +365,16 @@ export default function Dashboard() {
                 error={viewState === 'error' ? 'Failed to fetch SaaS records' : null}
               />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Tenant Distribution</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Tenant Distribution</h4>
               <PieChart
                 data={roleData.tenantDistribution}
                 isLoading={viewState === 'loading'}
                 error={viewState === 'error' ? 'Failed to load distribution stats' : null}
               />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm lg:col-span-2">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Platform Operations & User Growth</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm lg:col-span-2">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Platform Operations & User Growth</h4>
               <LineChart
                 data={roleData.platformUsageTrend}
                 keys={['operations', 'users']}
@@ -394,55 +388,53 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------- */}
       {/* 2. ADMIN Dashboard Interface */}
-      {/* -------------------------------------------------- */}
       {role === 'ADMIN' && kpiMetrics && roleData && (
         <div className="space-y-6">
           {/* KPI Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Total Assets</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.total_assets}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Assets</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.total_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Available</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.available_assets}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Available</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.available_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.active_bookings}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Maint</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_maintenance}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Maint</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.pending_maintenance}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Overdue Returns</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.overdue_returns}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Overdue Returns</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.overdue_returns}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Audit Issues</span>
-              <p className="text-xl font-black text-slate-850 dark:text-white mt-2">{kpiMetrics.audit_issues}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Audit Issues</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.audit_issues}</p>
             </div>
           </div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Health Statuses</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Asset Health Statuses</h4>
               <PieChart data={roleData.assetDistribution} isLoading={viewState === 'loading'} />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Department Allocations</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Department Allocations</h4>
               <BarChart data={roleData.departmentDistribution} layout="horizontal" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Top Utilized Resources</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Top Utilized Resources</h4>
               <BarChart data={roleData.topUsedAssets} layout="horizontal" barColor="#ec4899" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm lg:col-span-2">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Maintenance Job Trend</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm lg:col-span-2">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Maintenance Job Trend</h4>
               <LineChart
                 data={roleData.maintenanceTrend}
                 keys={['pending', 'approved', 'in_progress', 'resolved']}
@@ -450,8 +442,8 @@ export default function Dashboard() {
                 colors={{ pending: '#94a3b8', approved: '#6366f1', in_progress: '#f59e0b', resolved: '#10b981' }}
               />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Utilization Rate (%)</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Asset Utilization Rate (%)</h4>
               <LineChart
                 data={roleData.assetUtilizationRate}
                 keys={['rate']}
@@ -463,51 +455,49 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------- */}
       {/* 3. ASSET_MANAGER Dashboard Interface */}
-      {/* -------------------------------------------------- */}
       {role === 'ASSET_MANAGER' && kpiMetrics && roleData && (
         <div className="space-y-6">
           {/* KPI Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Managed Assets</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.managed_assets}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Managed Assets</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.managed_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Transfers</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_transfers}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Transfers</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.pending_transfers}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Maint Requests</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.maintenance_requests}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Maint Requests</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.maintenance_requests}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Under Repair</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.assets_under_maintenance}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Under Repair</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.assets_under_maintenance}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Overdue Returns</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.overdue_returns}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Overdue Returns</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.overdue_returns}</p>
             </div>
           </div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Repair Status Distribution</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Repair Status Distribution</h4>
               <PieChart data={roleData.maintenanceStatusDistribution} isLoading={viewState === 'loading'} />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Lifecycle Distribution</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Lifecycle Distribution</h4>
               <PieChart data={roleData.assetLifecycleDistribution} isLoading={viewState === 'loading'} />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Most Requested Resources</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Most Requested Resources</h4>
               <BarChart data={roleData.mostRequestedAssets} layout="horizontal" barColor="#f59e0b" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Allocation Trends</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Allocation Trends</h4>
               <LineChart
                 data={roleData.assetAllocationTrend}
                 keys={['allocated', 'returned']}
@@ -519,51 +509,49 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------- */}
       {/* 4. DEPARTMENT_HEAD Dashboard Interface */}
-      {/* -------------------------------------------------- */}
       {role === 'DEPARTMENT_HEAD' && kpiMetrics && roleData && (
         <div className="space-y-6">
           {/* KPI Grid */}
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Dept Assets</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.department_assets}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Dept Assets</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.department_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Staff Count</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.department_employees}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Staff Count</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.department_employees}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.active_bookings}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Pending Requests</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.pending_requests}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pending Requests</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.pending_requests}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Repair Jobs</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.maintenance_requests}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Repair Jobs</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.maintenance_requests}</p>
             </div>
           </div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Department Asset Status</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Department Asset Status</h4>
               <BarChart data={roleData.departmentAssetUsage} layout="horizontal" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Asset Type Share</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Asset Type Share</h4>
               <PieChart data={roleData.assetDistribution} isLoading={viewState === 'loading'} />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Resource Utilization (%)</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Resource Utilization (%)</h4>
               <BarChart data={roleData.resourceUsage} layout="horizontal" barColor="#a855f7" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">Monthly Reservation Trend</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">Monthly Reservation Trend</h4>
               <LineChart
                 data={roleData.bookingTrend}
                 keys={['bookings', 'hours']}
@@ -575,43 +563,41 @@ export default function Dashboard() {
         </div>
       )}
 
-      {/* -------------------------------------------------- */}
       {/* 5. EMPLOYEE Dashboard Interface */}
-      {/* -------------------------------------------------- */}
       {role === 'EMPLOYEE' && kpiMetrics && roleData && (
         <div className="space-y-6">
           {/* KPI Grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">My Handed Assets</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.my_assets}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">My Handed Assets</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.my_assets}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Upcoming Returns</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.upcoming_returns}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Upcoming Returns</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.upcoming_returns}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Active Bookings</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.active_bookings}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Bookings</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.active_bookings}</p>
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider">My Repair Tickets</span>
-              <p className="text-xl font-black text-slate-800 dark:text-white mt-2">{kpiMetrics.open_maintenance_requests}</p>
+            <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">My Repair Tickets</span>
+              <p className="text-xl font-black text-slate-800 mt-2">{kpiMetrics.open_maintenance_requests}</p>
             </div>
           </div>
 
           {/* Charts Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Top Active Assets</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">My Top Active Assets</h4>
               <PieChart data={roleData.myAssetUsage} isLoading={viewState === 'loading'} />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Maintenance Tickets</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">My Maintenance Tickets</h4>
               <BarChart data={roleData.maintenanceRequestHistory} layout="horizontal" barColor="#f59e0b" />
             </div>
-            <div className="bg-white dark:bg-slate-900/60 p-6 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm">
-              <h4 className="text-sm font-black text-slate-800 dark:text-white mb-2">My Booking Trend</h4>
+            <div className="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+              <h4 className="text-sm font-black text-slate-800 mb-2">My Booking Trend</h4>
               <LineChart
                 data={roleData.myBookingHistory}
                 keys={['bookings', 'hours']}

@@ -37,15 +37,15 @@ export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMo
   const allowedMenuItems = menuItems.filter((item) => item.roles.includes(role));
 
   const sidebarContent = (
-    <div className="flex flex-col h-full bg-slate-900 text-slate-100 border-r border-slate-800 shadow-xl transition-all duration-300">
+    <div className="flex flex-col h-full bg-white text-slate-700 border-r border-slate-200 transition-all duration-300">
       {/* Brand Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-800 h-16 shrink-0">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-slate-200 h-16 shrink-0">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="bg-gradient-to-tr from-indigo-500 to-violet-500 p-2 rounded-lg text-white font-bold text-lg leading-none shrink-0 shadow-lg shadow-indigo-500/20">
+          <div className="bg-gradient-to-tr from-indigo-550 to-violet-550 p-2 rounded-lg text-white font-bold text-lg leading-none shrink-0 shadow-lg shadow-indigo-650/15">
             AF
           </div>
           {(!isCollapsed || isOpenMobile) && (
-            <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent transition-opacity duration-300 whitespace-nowrap">
+            <span className="font-extrabold text-lg tracking-tight text-slate-900 transition-opacity duration-300 whitespace-nowrap">
               AssetFlow
             </span>
           )}
@@ -54,7 +54,7 @@ export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMo
         {!isOpenMobile && (
           <button
             onClick={onToggle}
-            className="hidden md:flex items-center justify-center p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="hidden md:flex items-center justify-center p-1.5 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
             title={isCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
           >
             {isCollapsed ? <RiMenuUnfoldLine className="w-5 h-5" /> : <RiMenuFoldLine className="w-5 h-5" />}
@@ -63,7 +63,7 @@ export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMo
       </div>
 
       {/* Navigation Menus */}
-      <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5 scrollbar-thin scrollbar-thumb-slate-800 scrollbar-track-transparent">
+      <nav className="flex-1 overflow-y-auto px-4 py-6 space-y-1.5 scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
         {allowedMenuItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -74,18 +74,18 @@ export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMo
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-3 rounded-xl font-medium text-sm transition-all duration-200 group relative ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/10'
-                    : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
+                    ? 'bg-indigo-50 text-indigo-650 shadow-sm border border-indigo-100/50'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >
               {({ isActive }) => (
                 <>
-                  <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-white' : 'text-slate-400 group-hover:text-slate-200'}`} />
+                  <Icon className={`w-5 h-5 shrink-0 ${isActive ? 'text-indigo-650' : 'text-slate-450 group-hover:text-slate-700'}`} />
                   {(!isCollapsed || isOpenMobile) ? (
                     <span className="truncate">{item.label}</span>
                   ) : (
-                    <span className="absolute left-14 bg-slate-950 text-white text-xs font-semibold px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-md border border-slate-800 z-50 whitespace-nowrap">
+                    <span className="absolute left-14 bg-slate-900 text-white text-xs font-semibold px-2.5 py-1.5 rounded-md opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity duration-150 shadow-md border border-slate-800 z-50 whitespace-nowrap">
                       {item.label}
                     </span>
                   )}
@@ -98,14 +98,14 @@ export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMo
 
       {/* User Info / Role Footer */}
       {(!isCollapsed || isOpenMobile) && (
-        <div className="p-4 border-t border-slate-800 bg-slate-950/40">
+        <div className="p-4 border-t border-slate-200 bg-slate-50">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-indigo-400 shrink-0 uppercase">
+            <div className="w-9 h-9 rounded-full bg-indigo-50 border border-indigo-100 flex items-center justify-center font-bold text-indigo-600 shrink-0 uppercase">
               {role ? role.charAt(0) : 'U'}
             </div>
             <div className="min-w-0">
-              <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider truncate">Current Role</p>
-              <p className="text-sm font-bold text-white truncate">{role || 'Not Logged In'}</p>
+              <p className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest truncate">Current Role</p>
+              <p className="text-sm font-bold text-slate-800 truncate">{role || 'Not Logged In'}</p>
             </div>
           </div>
         </div>
