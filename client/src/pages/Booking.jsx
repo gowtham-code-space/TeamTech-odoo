@@ -181,7 +181,6 @@ export default function Booking() {
   ) : null;
 
   return (
-<<<<<<< HEAD
     <div className="space-y-6">
       {/* Simulation console */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 bg-slate-900 text-white rounded-2xl border border-slate-800">
@@ -373,19 +372,6 @@ export default function Booking() {
           </div>
         </div>
       )}
-=======
-    <div className="p-6">
-      <PageHeader
-        title="Resource Booking"
-        subtitle="Manage resource reservations and schedules"
-        breadcrumbs={[
-          { label: 'Resource Booking', path: '/bookings' },
-        ]}
-        actions={pageActions}
-      />
-      
-      {renderContent()}
->>>>>>> sakthivel
     </div>
   );
 }
