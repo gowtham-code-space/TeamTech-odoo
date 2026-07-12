@@ -18,12 +18,12 @@ export default function Button({
   const baseStyle = 'inline-flex items-center justify-center font-semibold rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed select-none cursor-pointer';
 
   const variants = {
-    primary: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/10 focus:ring-indigo-500',
-    secondary: 'bg-slate-100 hover:bg-slate-200 text-slate-700 focus:ring-slate-400',
-    danger: 'bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/10 focus:ring-rose-500',
-    success: 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/10 focus:ring-emerald-500',
-    warning: 'bg-amber-500 hover:bg-amber-400 text-white shadow-md shadow-amber-500/10 focus:ring-amber-500',
-    outline: 'border border-slate-300 hover:bg-slate-50 text-slate-700 focus:ring-slate-450',
+    primary: 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/10 focus:ring-indigo-500 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+    secondary: 'bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 focus:ring-slate-400 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+    danger: 'bg-rose-600 hover:bg-rose-500 text-white shadow-md shadow-rose-600/10 focus:ring-rose-500 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+    success: 'bg-emerald-600 hover:bg-emerald-500 text-white shadow-md shadow-emerald-600/10 focus:ring-emerald-500 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+    warning: 'bg-amber-500 hover:bg-amber-400 text-white shadow-md shadow-amber-500/10 focus:ring-amber-500 focus:ring-offset-white dark:focus:ring-offset-slate-900',
+    outline: 'border border-slate-300 dark:border-slate-700 hover:bg-slate-550 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300 focus:ring-slate-400 focus:ring-offset-white dark:focus:ring-offset-slate-900',
   };
 
   const sizes = {

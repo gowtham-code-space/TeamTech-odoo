@@ -14,6 +14,7 @@ import {
   RiNotification4Line,
   RiMenuFoldLine,
   RiMenuUnfoldLine,
+  RiUserSharedLine,
 } from 'react-icons/ri';
 
 const menuItems = [
@@ -26,6 +27,7 @@ const menuItems = [
   { path: '/audit', label: 'Audit', icon: RiShieldCheckLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
   { path: '/reports', label: 'Reports', icon: RiPieChartLine, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER] },
   { path: '/notifications', label: 'Notifications', icon: RiNotification4Line, roles: [ROLES.ADMIN, ROLES.ASSET_MANAGER, ROLES.DEPT_HEAD, ROLES.EMPLOYEE] },
+  { path: '/admin/users', label: 'User Directory', icon: RiUserSharedLine, roles: [ROLES.ADMIN] },
 ];
 
 export default function Sidebar({ isCollapsed, onToggle, isOpenMobile, onCloseMobile }) {

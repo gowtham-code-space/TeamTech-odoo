@@ -1,9 +1,15 @@
 export const ROLES = {
-  SUPER_ADMIN: 'Super Admin',
-  ADMIN: 'Admin',
-  ASSET_MANAGER: 'Asset Manager',
-  DEPT_HEAD: 'Department Head',
-  EMPLOYEE: 'Employee',
+  ADMIN: 'ADMIN',
+  ASSET_MANAGER: 'ASSET_MANAGER',
+  DEPT_HEAD: 'DEPARTMENT_HEAD',
+  EMPLOYEE: 'EMPLOYEE',
+};
+
+export const ROLE_LABELS = {
+  [ROLES.ADMIN]: 'Admin',
+  [ROLES.ASSET_MANAGER]: 'Asset Manager',
+  [ROLES.DEPT_HEAD]: 'Department Head',
+  [ROLES.EMPLOYEE]: 'Employee',
 };
 
 export const ASSET_STATUSES = {

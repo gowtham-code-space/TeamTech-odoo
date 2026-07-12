@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import MainLayout from '../components/layout/MainLayout';
 
-// Import all pages (stubs filled later)
+// Import all pages
 import Login from '../pages/auth/Login';
 import Signup from '../pages/auth/Signup';
 import Dashboard from '../pages/Dashboard';
@@ -15,14 +15,14 @@ import Maintenance from '../pages/Maintenance';
 import Audit from '../pages/Audit';
 import Reports from '../pages/Reports';
 import Notifications from '../pages/Notifications';
+import AdminUsers from '../pages/AdminUsers'; // New administration page
 
-// Roles definition helper
+// Roles synchronized with database uppercase strings
 const ROLES = {
-  SUPER_ADMIN: 'Super Admin',
-  ADMIN: 'Admin',
-  ASSET_MANAGER: 'Asset Manager',
-  DEPT_HEAD: 'Department Head',
-  EMPLOYEE: 'Employee',
+  ADMIN: 'ADMIN',
+  ASSET_MANAGER: 'ASSET_MANAGER',
+  DEPT_HEAD: 'DEPARTMENT_HEAD',
+  EMPLOYEE: 'EMPLOYEE',
 };
 
 // Route protection for authenticated users
@@ -134,6 +134,16 @@ export default function AppRoutes() {
 
         {/* Notifications (Available to all roles) */}
         <Route path="notifications" element={<Notifications />} />
+
+        {/* Admin Directory Page (ADMIN only) */}
+        <Route
+          path="admin/users"
+          element={
+            <RoleGuard allowedRoles={[ROLES.ADMIN]}>
+              <AdminUsers />
+            </RoleGuard>
+          }
+        />
       </Route>
 
       {/* Fallback route */}
