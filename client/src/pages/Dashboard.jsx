@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import {
   RiCpuLine,
@@ -8,6 +9,14 @@ import {
   RiRefreshLine,
   RiDatabaseLine,
   RiHeartPulseLine,
+  RiAddLine,
+  RiCalendarCheckLine,
+  RiToolsLine,
+  RiShieldCheckLine,
+  RiPieChartLine,
+  RiArrowRightLine,
+  RiExchangeLine,
+  RiTimeLine,
 } from 'react-icons/ri';
 import PieChart from '../components/charts/PieChart';
 import LineChart from '../components/charts/LineChart';
@@ -20,8 +29,28 @@ import {
   mockEmployeeData,
 } from '../mock/dashboardData';
 
+// Universal KPIs — shared across all roles (mock values, API-ready)
+const UNIVERSAL_KPIS = [
+  { key: 'assetsAvailable',  label: 'Assets Available',   value: 120, color: '#10b981', icon: RiCpuLine,          badge: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' },
+  { key: 'assetsAllocated',  label: 'Assets Allocated',   value: 85,  color: '#6366f1', icon: RiExchangeLine,      badge: 'bg-indigo-500/10 text-indigo-600 dark:text-indigo-400' },
+  { key: 'activeBookings',   label: 'Active Bookings',    value: 23,  color: '#3b82f6', icon: RiCalendarCheckLine, badge: 'bg-blue-500/10 text-blue-600 dark:text-blue-400' },
+  { key: 'maintenanceToday', label: 'Maintenance Today',  value: 7,   color: '#f59e0b', icon: RiToolsLine,         badge: 'bg-amber-500/10 text-amber-600 dark:text-amber-400' },
+  { key: 'pendingTransfers', label: 'Pending Transfers',  value: 4,   color: '#8b5cf6', icon: RiExchangeLine,      badge: 'bg-violet-500/10 text-violet-600 dark:text-violet-400' },
+  { key: 'upcomingReturns',  label: 'Upcoming Returns',   value: 12,  color: '#ec4899', icon: RiTimeLine,          badge: 'bg-pink-500/10 text-pink-600 dark:text-pink-400' },
+];
+
+// Quick Actions — visible to all authenticated users
+const QUICK_ACTIONS = [
+  { label: 'Register Asset',            path: '/assets',      icon: RiAddLine,          variant: 'primary',   desc: 'Add new asset to inventory' },
+  { label: 'Book Resource',             path: '/booking',     icon: RiCalendarCheckLine, variant: 'secondary', desc: 'Reserve a resource or room' },
+  { label: 'Raise Maintenance Request', path: '/maintenance', icon: RiToolsLine,         variant: 'warning',   desc: 'Report a maintenance issue' },
+  { label: 'Start Audit',              path: '/audit',       icon: RiShieldCheckLine,   variant: 'outline',   desc: 'Begin asset audit session' },
+  { label: 'View Reports',             path: '/reports',     icon: RiPieChartLine,      variant: 'secondary', desc: 'Explore analytics & exports' },
+];
+
 export default function Dashboard() {
   const { user, role } = useAuthStore();
+  const navigate = useNavigate();
   const [viewState, setViewState] = useState('success'); // success | loading | empty | error
 
   // Unified dynamic dashboard states
@@ -169,6 +198,88 @@ export default function Dashboard() {
           Here is your personalized dashboard portal for role privileges: <span className="font-extrabold text-indigo-650 dark:text-indigo-400">{role}</span>
         </p>
       </div>
+
+      {/* ------------------------------------------------------ */}
+      {/* Universal 6-KPI Row — visible to ALL authenticated roles */}
+      {/* ------------------------------------------------------ */}
+      {viewState !== 'error' && (
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+          {UNIVERSAL_KPIS.map((kpi) => {
+            const Icon = kpi.icon;
+            return (
+              <div
+                key={kpi.key}
+                className="bg-white dark:bg-slate-900/60 p-5 rounded-2xl border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 group"
+              >
+                {viewState === 'loading' ? (
+                  <div className="space-y-3 animate-pulse">
+                    <div className="w-8 h-8 rounded-xl bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-3 rounded bg-slate-200 dark:bg-slate-800 w-2/3" />
+                    <div className="h-6 rounded bg-slate-200 dark:bg-slate-800 w-1/2" />
+                  </div>
+                ) : (
+                  <>
+                    {/* Icon badge */}
+                    <div className={`inline-flex items-center justify-center w-9 h-9 rounded-xl mb-3 ${kpi.badge}`}>
+                      <Icon className="w-[18px] h-[18px]" />
+                    </div>
+                    {/* Label */}
+                    <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 leading-none mb-1.5">
+                      {kpi.label}
+                    </p>
+                    {/* Value */}
+                    <p
+                      className="text-2xl font-black tracking-tight"
+                      style={{ color: kpi.color }}
+                    >
+                      {viewState === 'empty' ? 0 : kpi.value}
+                    </p>
+                  </>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* ------------------------------------------------------ */}
+      {/* Quick Actions Panel — visible to ALL authenticated roles */}
+      {/* ------------------------------------------------------ */}
+      {viewState === 'success' && (
+        <div className="bg-white dark:bg-slate-900/60 rounded-3xl border border-slate-200/60 dark:border-slate-800 shadow-sm p-6">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <h3 className="text-sm font-black text-slate-800 dark:text-white">Quick Actions</h3>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Jump to key workflows from your dashboard</p>
+            </div>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+            {QUICK_ACTIONS.map((action) => (
+              <button
+                key={action.path}
+                onClick={() => navigate(action.path)}
+                className="group flex flex-col items-start gap-3 p-4 rounded-2xl border border-slate-200/70 dark:border-slate-800 hover:border-indigo-300 dark:hover:border-indigo-700 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/30 transition-all duration-200 text-left cursor-pointer"
+              >
+                {/* Action icon */}
+                <div className="flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-600 text-white shadow-sm shadow-indigo-600/20 group-hover:shadow-md group-hover:shadow-indigo-600/25 transition-shadow">
+                  <action.icon className="w-4.5 h-4.5" />
+                </div>
+                {/* Action label */}
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs font-black text-slate-800 dark:text-slate-100 leading-tight">
+                    {action.label}
+                  </p>
+                  <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 leading-snug">
+                    {action.desc}
+                  </p>
+                </div>
+                {/* Arrow */}
+                <RiArrowRightLine className="w-3.5 h-3.5 text-slate-300 dark:text-slate-600 group-hover:text-indigo-500 group-hover:translate-x-0.5 transition-all self-end" />
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* API Connection Error State */}
       {viewState === 'error' && (
