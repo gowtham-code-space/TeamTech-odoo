@@ -70,3 +70,6 @@ export const errorResponse = (res, message, statusCode = 400) => {
         message
     });
 };
+
+export const success = successResponse;
+export const error = errorResponse;

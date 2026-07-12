@@ -17,6 +17,16 @@ const pool = mysql.createPool({
 const initDb = async () => {
   let connection;
   try {
+    // Dynamically create database if not exists to avoid server crash
+    const tempConnection = await mysql.createConnection({
+      host: config.db.host,
+      port: config.db.port,
+      user: config.db.user,
+      password: config.db.password
+    });
+    await tempConnection.query(`CREATE DATABASE IF NOT EXISTS \`${config.db.database}\``);
+    await tempConnection.end();
+
     connection = await pool.getConnection();
     console.log(`Successfully connected to MySQL database: "${config.db.database}"`);
 
@@ -112,6 +122,14 @@ const initDb = async () => {
     }
     if (seedCount > 0) {
       console.log(`Seeded ${seedCount} default DEVELOPMENT demo accounts successfully.`);
+    }
+
+    try {
+      const orgService = require('../services/organization.service');
+      await orgService.initTables();
+      console.log('Successfully completed Organization Module database migrations.');
+    } catch (orgErr) {
+      console.warn('Organization tables initialization check skipped/failed:', orgErr.message);
     }
   } catch (error) {
     console.error('MySQL Connection or Setup failed:');
