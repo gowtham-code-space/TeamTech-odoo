@@ -38,10 +38,15 @@ const initDb = async () => {
     await connection.query(createUsersTableQuery);
     console.log('Verified database tables structure successfully.');
 
-    // Seeding demo users if table is empty
+    // DEVELOPMENT SEEDING ONLY:
+    // These accounts are seeded solely for development testing and system demo evaluation.
+    // Production Flow: 
+    // - New signups must always register as "EMPLOYEE" by default.
+    // - Elevated roles (ASSET_MANAGER, DEPARTMENT_HEAD) can only be granted by an ADMIN
+    //   via the Admin User Directory promotion workflow.
     const [rows] = await connection.query('SELECT COUNT(*) as count FROM users');
     if (rows[0].count === 0) {
-      console.log('Seeding default demo accounts...');
+      console.log('Seeding default DEVELOPMENT demo accounts...');
       
       const seedUsers = [
         {
