@@ -27,7 +27,7 @@ const initDb = async () => {
         full_name VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
-        role ENUM('ADMIN', 'ASSET_MANAGER', 'DEPARTMENT_HEAD', 'EMPLOYEE') NOT NULL DEFAULT 'EMPLOYEE',
+        role ENUM('SUPER_ADMIN', 'ADMIN', 'ASSET_MANAGER', 'DEPARTMENT_HEAD', 'EMPLOYEE') NOT NULL DEFAULT 'EMPLOYEE',
         is_active BOOLEAN NOT NULL DEFAULT TRUE,
         department VARCHAR(255) DEFAULT NULL,
         organization_id VARCHAR(255) DEFAULT NULL,
@@ -36,6 +36,18 @@ const initDb = async () => {
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
     `;
     await connection.query(createUsersTableQuery);
+
+    // Alter table to support SUPER_ADMIN role ENUM sync if table existed previously
+    try {
+      await connection.query(`
+        ALTER TABLE users MODIFY COLUMN role 
+        ENUM('SUPER_ADMIN', 'ADMIN', 'ASSET_MANAGER', 'DEPARTMENT_HEAD', 'EMPLOYEE') 
+        NOT NULL DEFAULT 'EMPLOYEE'
+      `);
+    } catch (alterErr) {
+      console.warn('Auto role ENUM migration check completed:', alterErr.message);
+    }
+    
     console.log('Verified database tables structure successfully.');
 
     // DEVELOPMENT SEEDING ONLY:
